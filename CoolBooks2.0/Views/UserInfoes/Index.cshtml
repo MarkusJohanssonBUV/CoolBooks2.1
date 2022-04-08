@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Books)
+                @Html.DisplayNameFor(model => model.BooksUsers)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Reviews)
@@ -64,10 +64,10 @@
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Books.BooksID)
+                @Html.DisplayFor(modelItem => item.BooksUsers)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Reviews.ReviewsID)
+                @Html.DisplayFor(modelItem => item.Reviews)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UserInfoID">Edit</a> |

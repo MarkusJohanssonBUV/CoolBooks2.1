@@ -10,11 +10,6 @@ namespace CoolBooks.Models
 {
     public partial class Reviews
     {
-        public Reviews()
-        {
-            UserInfo = new HashSet<UserInfo>();
-        }
-
         [Key]
         public int ReviewsID { get; set; }
         public int BookID { get; set; }
@@ -28,13 +23,15 @@ namespace CoolBooks.Models
         [StringLength(50)]
         [Unicode(false)]
         public string Rating { get; set; }
-        [StringLength(10)]
-        [Unicode(false)]
-        public string IdDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? Created { get; set; }
 
-        [InverseProperty("Reviews")]
-        public virtual ICollection<UserInfo> UserInfo { get; set; }
+        [ForeignKey(nameof(BookID))]
+        [InverseProperty(nameof(Books.Reviews))]
+        public virtual Books Book { get; set; }
+        [ForeignKey(nameof(UserID))]
+        [InverseProperty(nameof(UserInfo.Reviews))]
+        public virtual UserInfo User { get; set; }
     }
 }

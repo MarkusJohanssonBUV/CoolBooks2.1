@@ -7,7 +7,7 @@
    "IncludeConnectionString": true,
    "ModelNamespace": null,
    "OutputContextPath": "Data",
-   "OutputPath": "Model",
+   "OutputPath": "Models",
    "ProjectRootNamespace": "CoolBooks",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
@@ -19,6 +19,10 @@
       },
       {
          "Name": "[dbo].[Books]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BooksUsers]",
          "ObjectType": 0
       },
       {
@@ -34,7 +38,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "MARKUS\\MARKUSSQLEXPRESS.CoolBooks",
+   "UiHint": "MARKUS\\MARKUSSQLEXPRESS.Coolbooks4",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,
@@ -43,7 +47,7 @@
    "UseHierarchyId": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
-   "UseManyToManyEntity": false,
+   "UseManyToManyEntity": true,
    "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,

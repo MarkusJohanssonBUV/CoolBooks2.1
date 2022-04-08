@@ -1,5 +1,6 @@
 using CoolBooks.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CoolbooksContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoolbooksContext")));
-
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<CoolbooksContext>();
+//builder.Services.AddDbContext<CoolbooksContext>(options =>
+  //  options.UseSqlServer(connectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +27,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

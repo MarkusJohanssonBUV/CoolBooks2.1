@@ -23,7 +23,7 @@ namespace CoolBooks.Controllers
         // GET: UserInfoes
         public async Task<IActionResult> Index()
         {
-            var coolbooksContext = _context.UserInfo.Include(u => u.Books).Include(u => u.Reviews);
+            var coolbooksContext = _context.UserInfo.Include(u => u.BooksUsers).Include(u => u.Reviews);
             return View(await coolbooksContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace CoolBooks.Controllers
             }
 
             var userInfo = await _context.UserInfo
-                .Include(u => u.Books)
+                .Include(u => u.BooksUsers)
                 .Include(u => u.Reviews)
                 .FirstOrDefaultAsync(m => m.UserInfoID == id);
             if (userInfo == null)
@@ -68,8 +68,8 @@ namespace CoolBooks.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksID);
-            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.ReviewsID);
+            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksUsers);
+            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.Reviews);
             return View(userInfo);
         }
 
@@ -86,8 +86,8 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksID);
-            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.ReviewsID);
+            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksUsers);
+            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.Reviews);
             return View(userInfo);
         }
 
@@ -123,8 +123,8 @@ namespace CoolBooks.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksID);
-            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.ReviewsID);
+            ViewData["BooksID"] = new SelectList(_context.Books, "BooksID", "BooksID", userInfo.BooksUsers);
+            ViewData["ReviewsID"] = new SelectList(_context.Reviews, "ReviewsID", "ReviewsID", userInfo.Reviews);
             return View(userInfo);
         }
 
@@ -137,7 +137,7 @@ namespace CoolBooks.Controllers
             }
 
             var userInfo = await _context.UserInfo
-                .Include(u => u.Books)
+                .Include(u => u.BooksUsers)
                 .Include(u => u.Reviews)
                 .FirstOrDefaultAsync(m => m.UserInfoID == id);
             if (userInfo == null)

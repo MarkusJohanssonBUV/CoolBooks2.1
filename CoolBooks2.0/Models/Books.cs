@@ -12,48 +12,39 @@ namespace CoolBooks.Models
     {
         public Books()
         {
-            UserInfo = new HashSet<UserInfo>();
+            BooksUsers = new HashSet<BooksUsers>();
+            Reviews = new HashSet<Reviews>();
         }
 
         [Key]
         public int BooksID { get; set; }
-        public int UserID { get; set; }
         public int AuthorID { get; set; }
-
         [StringLength(50)]
         [Unicode(false)]
         public string Title { get; set; }
-
         [StringLength(500)]
         [Unicode(false)]
         public string Description { get; set; }
-
         [StringLength(30)]
         [Unicode(false)]
         public string ISBN { get; set; }
-
         [StringLength(450)]
         [Unicode(false)]
         public string ImagePath { get; set; }
-
-        [StringLength(20)]
-        [Unicode(false)]
-        public string IsDeleted { get; set; }
-
+        public bool? IsDeleted { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? Created { get; set; }
-
         public int GenerID { get; set; }
 
         [ForeignKey(nameof(AuthorID))]
         [InverseProperty(nameof(Authors.Books))]
         public virtual Authors Author { get; set; }
-
         [ForeignKey(nameof(GenerID))]
         [InverseProperty(nameof(Genres.Books))]
         public virtual Genres Gener { get; set; }
-
         [InverseProperty("Books")]
-        public virtual ICollection<UserInfo> UserInfo { get; set; }
+        public virtual ICollection<BooksUsers> BooksUsers { get; set; }
+        [InverseProperty("Book")]
+        public virtual ICollection<Reviews> Reviews { get; set; }
     }
 }

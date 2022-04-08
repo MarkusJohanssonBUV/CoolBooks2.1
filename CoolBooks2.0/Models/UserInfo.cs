@@ -10,32 +10,41 @@ namespace CoolBooks.Models
 {
     public partial class UserInfo
     {
+        public UserInfo()
+        {
+            BooksUsers = new HashSet<BooksUsers>();
+            Reviews = new HashSet<Reviews>();
+        }
+
         [Key]
         public int UserInfoID { get; set; }
-        public int UserID { get; set; }
-        public int ReviewsID { get; set; }
-        public int BooksID { get; set; }
+        public int? UserID { get; set; }
+
         [StringLength(50)]
         [Unicode(false)]
         public string FirstName { get; set; }
+
         [StringLength(50)]
         [Unicode(false)]
         public string LastName { get; set; }
+
         [StringLength(50)]
         [Unicode(false)]
         public string PhoneNumber { get; set; }
+
         [StringLength(50)]
         [Unicode(false)]
         public string Adress { get; set; }
+
         [StringLength(50)]
         [Unicode(false)]
         public string Created { get; set; }
 
-        [ForeignKey(nameof(BooksID))]
-        [InverseProperty("UserInfo")]
-        public virtual Books Books { get; set; }
-        [ForeignKey(nameof(ReviewsID))]
-        [InverseProperty("UserInfo")]
-        public virtual Reviews Reviews { get; set; }
+        [InverseProperty("User")]
+        public virtual ICollection<BooksUsers> BooksUsers { get; set; }
+
+        [InverseProperty("User")]
+        public virtual ICollection<Reviews> Reviews { get; set; }
+
     }
 }
