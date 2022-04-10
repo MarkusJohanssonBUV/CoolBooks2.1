@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "About the Bunny Sheriffs";
 }
 <h1>@ViewData["Title"]</h1>
 
@@ -8,59 +8,76 @@
 <div class="grid-container">
   <div class="item1"><p>The average person only reads 33 books in their lifetime. That makes us sad :(</p>
                      <p>So we decided to improve that! (And totally not because we had to)</p>
-                     <p>The Cooler and better Goodreads, created by the one and only Bunny Sheriffs.</p></div>
+                     <p>The Cooler and better Goodreads, created by the one and only Bunny Sheriffs.</p>
+                 <hr></div>
   <div class="item2">
       <div class="Middleflex">
           <div><img src="https://i.ibb.co/8xZ9Dnz/Sk-rmbild-2022-04-04-130830.png" alt="BunnySheriffs" class="BunnyLogo" width="300" height="300"></div>
-          <div><p class="Bunnytext">Established 4th of April 2022 by the most professional gang you'll ever encountered.</p>
-              <p>We recieved a vision and turned it into reality!</p>
-              <p>Meet the crew below!</p></div>
+              <div><p>Established 4th of April 2022 by the most professional gang you'll ever encounter.</p>
+              <p>We recieved a vision and turned it into reality! So we worked tirelessly to create the app of our dreams.</p>
+              <p>And the dreams of our client too...</p>
+              <p>Meet the crew below!</p>
+          </div>
       </div>
+      <hr>
     </div>
 
-  <div class="item3">
+  <div class="Profile1">
       <div class="Middleflex">
           <div>
-              <div class="container">
-          <img src="https://i.ibb.co/k4GBvcj/Sk-rmbild-2022-04-06-144200.png" alt="Avatar" class="image" style="width:100%">
+              <div class="container2">
+          <img src="https://i.ibb.co/pPyfnHc/Sk-rmbild-2022-04-10-162900.png" alt="Avatar" class="image" style="width:100%">
           <div class="middle">
             <div class="text">Andreas</div>
           </div>
         </div>
           </div>
 
-            <div><div class="container">
-          <img src="https://i.ibb.co/k4GBvcj/Sk-rmbild-2022-04-06-144200.png" alt="Avatar" class="image" style="width:100%">
+            <div><div class="container2">
+          <img src="https://i.ibb.co/XL4HTB2/Sk-rmbild-2022-04-10-162759.png" alt="Avatar" class="image" style="width:100%">
           <div class="middle">
             <div class="text">Gabriel</div>
           </div>
         </div>
         </div>
 
-          <div><div class="container">
-          <img src="https://i.ibb.co/k4GBvcj/Sk-rmbild-2022-04-06-144200.png" alt="Avatar" class="image" style="width:100%">
+
+
+
+        <div>
+              <div class="container2">
+          <img src="https://i.ibb.co/WyHF1Vq/Sk-rmbild-2022-04-10-162820.png" alt="Avatar" class="image" style="width:100%">
           <div class="middle">
             <div class="text">Johan</div>
           </div>
         </div>
-        </div>
+          </div>
 
-          <div><div class="container">
-          <img src="https://i.ibb.co/k4GBvcj/Sk-rmbild-2022-04-06-144200.png" alt="Avatar" class="image" style="width:100%">
+
+
+          <div>
+              <div class="container2">
+          <img src="https://i.ibb.co/tBRNQkq/tbw9xtpzbcf61.jpg" alt="Avatar" class="image" style="width:100%">
           <div class="middle">
             <div class="text">Markus</div>
           </div>
         </div>
-        </div>
+          </div>
+
 
       </div>
-   </div>   
+   </div>
 </div>
 
 
 
 
 <style>
+
+body {
+    background-color: #e6e6e6;
+    color: #041B15
+}
 
 .BunnyLogo {
     border-radius: 100%;
@@ -69,27 +86,28 @@
 .Middleflex {
     display: flex;
     flex-wrap: nowrap;
-}
-
-.Bunnytext {
-    text-align: center;
+    text-align: left;
+    /*background-color: #BBB8B2;*/
+    background-color: #e6e6e6;
 }
 
 .Middleflex > div {
     padding: 2%;
-    text-align: center;
+    text-align: left;
 }
 
 .item1 { grid-area: Top; }
 .item2 { grid-area: Middle; }
-.item3 { grid-area: Bottom; }
+.item3 { grid-area: Profile1; }
+.item4 { grid-area: Profile2; }
 
 .grid-container {
   display: grid;
   grid-template-areas: 
   'Top'
   'Middle'
-  'Bottom';
+  'Profile1'
+  'Profile2';
   padding: 10px;
 }
 .grid-item {
@@ -97,11 +115,7 @@
   padding: 20px;
 }
 
-
-
-
-
-.container {
+.container2 {
   position: relative;
   width: 50%;
 }
@@ -109,7 +123,7 @@
 .image {
   opacity: 1;
   display: block;
-  width: 100%;
+  width: 200%;
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
@@ -125,28 +139,20 @@
   -ms-transform: translate(-50%, -50%)
 }
 
-.container:hover .image {
+.container2:hover .image
+{
   opacity: 0.3;
 }
 
-.container:hover .middle {
+.container2:hover .middle
+{
   opacity: 1;
 }
 
 .text {
-  background-color: #2DB9F3;
-  color: white;
+  background-color: #942911;
+  color: #041B15;
   font-size: 16px;
   padding: 16px 32px;
 }
-
-
-
-
-
-
-
-
-
-
 </style>
