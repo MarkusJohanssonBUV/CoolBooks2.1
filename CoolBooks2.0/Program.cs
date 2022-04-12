@@ -9,10 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CoolbooksContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoolbooksContext")));
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<CoolbooksContext>();
-//builder.Services.AddDbContext<CoolbooksContext>(options =>
-  //  options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<CoolbooksContext>();
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,5 +34,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+    app.UseEndpoints(endpoints => endpoints.MapRazorPages());
 app.Run();

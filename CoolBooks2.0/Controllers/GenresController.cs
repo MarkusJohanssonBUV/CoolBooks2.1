@@ -35,7 +35,7 @@ namespace CoolBooks.Controllers
             }
 
             var genres = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenerID == id);
+                .FirstOrDefaultAsync(m => m.GenreID == id);
             if (genres == null)
             {
                 return NotFound();
@@ -89,7 +89,7 @@ namespace CoolBooks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("GenerID,Name,Description,Created")] Genres genres)
         {
-            if (id != genres.GenerID)
+            if (id != genres.GenreID)
             {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace CoolBooks.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GenresExists(genres.GenerID))
+                    if (!GenresExists(genres.GenreID))
                     {
                         return NotFound();
                     }
@@ -126,7 +126,7 @@ namespace CoolBooks.Controllers
             }
 
             var genres = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenerID == id);
+                .FirstOrDefaultAsync(m => m.GenreID == id);
             if (genres == null)
             {
                 return NotFound();
@@ -148,7 +148,7 @@ namespace CoolBooks.Controllers
 
         private bool GenresExists(int id)
         {
-            return _context.Genres.Any(e => e.GenerID == id);
+            return _context.Genres.Any(e => e.GenreID == id);
         }
     }
 }

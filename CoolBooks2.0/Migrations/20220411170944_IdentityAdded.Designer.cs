@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolBooks.Migrations
 {
     [DbContext(typeof(CoolbooksContext))]
-    [Migration("20220409100238_IdentityAdded")]
+    [Migration("20220411170944_IdentityAdded")]
     partial class IdentityAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,20 +33,15 @@ namespace CoolBooks.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorID"), 1L, 1);
 
                     b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AuthorID")
-                        .HasName("Pk_AuthorID");
+                    b.HasKey("AuthorID");
 
                     b.ToTable("Authors");
                 });
@@ -59,45 +54,58 @@ namespace CoolBooks.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BooksID"), 1L, 1);
 
-                    b.Property<int>("AuthorID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<int>("GenerID")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
-                        .HasMaxLength(450)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BooksID");
 
+                    b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.BooksAuthors", b =>
+                {
+                    b.Property<int>("BooksID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuthorID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksID", "AuthorID")
+                        .HasName("PK_BooksAuthor");
+
                     b.HasIndex("AuthorID");
 
-                    b.HasIndex("GenerID");
+                    b.ToTable("BooksAuthors");
+                });
 
-                    b.ToTable("Books");
+            modelBuilder.Entity("CoolBooks.Models.BooksGenres", b =>
+                {
+                    b.Property<int>("BooksID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksID", "GenreID");
+
+                    b.HasIndex("GenreID");
+
+                    b.ToTable("BooksGenres");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.BooksUsers", b =>
@@ -105,23 +113,23 @@ namespace CoolBooks.Migrations
                     b.Property<int>("BooksID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("BooksID", "UserID");
+                    b.HasKey("BooksID", "ClientId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("ClientId");
 
                     b.ToTable("BooksUsers");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Genres", b =>
                 {
-                    b.Property<int>("GenerID")
+                    b.Property<int>("GenreID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenerID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreID"), 1L, 1);
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -136,7 +144,7 @@ namespace CoolBooks.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.HasKey("GenerID")
+                    b.HasKey("GenreID")
                         .HasName("Pk_GenerID");
 
                     b.ToTable("Genres");
@@ -153,35 +161,29 @@ namespace CoolBooks.Migrations
                     b.Property<int>("BookID")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Rating")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewsID");
 
                     b.HasIndex("BookID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Reviews");
                 });
@@ -195,34 +197,29 @@ namespace CoolBooks.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserInfoID"), 1L, 1);
 
                     b.Property<string>("Adress")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Created")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserInfoID");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("UserInfo");
                 });
@@ -372,10 +369,12 @@ namespace CoolBooks.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -412,10 +411,12 @@ namespace CoolBooks.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -425,23 +426,42 @@ namespace CoolBooks.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CoolBooks.Models.Books", b =>
+            modelBuilder.Entity("CoolBooks.Models.BooksAuthors", b =>
                 {
                     b.HasOne("CoolBooks.Models.Authors", "Author")
-                        .WithMany("Books")
+                        .WithMany("BooksAuthors")
                         .HasForeignKey("AuthorID")
                         .IsRequired()
-                        .HasConstraintName("Fk_AuthorID");
+                        .HasConstraintName("FK_BooksAuthor_Author");
 
-                    b.HasOne("CoolBooks.Models.Genres", "Gener")
-                        .WithMany("Books")
-                        .HasForeignKey("GenerID")
+                    b.HasOne("CoolBooks.Models.Books", "Books")
+                        .WithMany("BooksAuthors")
+                        .HasForeignKey("BooksID")
                         .IsRequired()
-                        .HasConstraintName("Fk_Genres");
+                        .HasConstraintName("FK_BooksAuthor_Books");
 
                     b.Navigation("Author");
 
-                    b.Navigation("Gener");
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.BooksGenres", b =>
+                {
+                    b.HasOne("CoolBooks.Models.Books", "Books")
+                        .WithMany("BooksGenres")
+                        .HasForeignKey("BooksID")
+                        .IsRequired()
+                        .HasConstraintName("FK_BooksGenres_Books");
+
+                    b.HasOne("CoolBooks.Models.Genres", "Genre")
+                        .WithMany("BooksGenres")
+                        .HasForeignKey("GenreID")
+                        .IsRequired()
+                        .HasConstraintName("FK_BooksGenres_Author");
+
+                    b.Navigation("Books");
+
+                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.BooksUsers", b =>
@@ -449,18 +469,18 @@ namespace CoolBooks.Migrations
                     b.HasOne("CoolBooks.Models.Books", "Books")
                         .WithMany("BooksUsers")
                         .HasForeignKey("BooksID")
-                        .IsRequired()
-                        .HasConstraintName("FK_BooksUsers_Books");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("CoolBooks.Models.UserInfo", "User")
-                        .WithMany("BooksUsers")
-                        .HasForeignKey("UserID")
-                        .IsRequired()
-                        .HasConstraintName("FK_BooksUsers_UserID");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Books");
 
-                    b.Navigation("User");
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
@@ -468,18 +488,25 @@ namespace CoolBooks.Migrations
                     b.HasOne("CoolBooks.Models.Books", "Book")
                         .WithMany("Reviews")
                         .HasForeignKey("BookID")
-                        .IsRequired()
-                        .HasConstraintName("Fk_Books_Reviews");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("CoolBooks.Models.UserInfo", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserID")
-                        .IsRequired()
-                        .HasConstraintName("Fk_User_Reviews");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
 
                     b.Navigation("Book");
 
-                    b.Navigation("User");
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.UserInfo", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -535,11 +562,15 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("CoolBooks.Models.Authors", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("BooksAuthors");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Books", b =>
                 {
+                    b.Navigation("BooksAuthors");
+
+                    b.Navigation("BooksGenres");
+
                     b.Navigation("BooksUsers");
 
                     b.Navigation("Reviews");
@@ -547,14 +578,7 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("CoolBooks.Models.Genres", b =>
                 {
-                    b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("CoolBooks.Models.UserInfo", b =>
-                {
-                    b.Navigation("BooksUsers");
-
-                    b.Navigation("Reviews");
+                    b.Navigation("BooksGenres");
                 });
 #pragma warning restore 612, 618
         }

@@ -54,20 +54,38 @@ namespace CoolBooks.Migrations
                 {
                     AuthorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime", nullable: true)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Pk_AuthorID", x => x.AuthorID);
+                    table.PrimaryKey("PK_Authors", x => x.AuthorID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    BooksID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.BooksID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
-                    GenerID = table.Column<int>(type: "int", nullable: false)
+                    GenreID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     Description = table.Column<string>(type: "varchar(1000)", unicode: false, maxLength: 1000, nullable: true),
@@ -75,25 +93,7 @@ namespace CoolBooks.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Pk_GenerID", x => x.GenerID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserInfo",
-                columns: table => new
-                {
-                    UserInfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: true),
-                    FirstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    LastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Adress = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Created = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserInfo", x => x.UserInfoID);
+                    table.PrimaryKey("Pk_GenerID", x => x.GenreID);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,8 +142,8 @@ namespace CoolBooks.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -187,8 +187,8 @@ namespace CoolBooks.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -203,55 +203,73 @@ namespace CoolBooks.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "UserInfo",
                 columns: table => new
                 {
-                    BooksID = table.Column<int>(type: "int", nullable: false)
+                    UserInfoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AuthorID = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
-                    ISBN = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true),
-                    ImagePath = table.Column<string>(type: "varchar(450)", unicode: false, maxLength: 450, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime", nullable: true),
-                    GenerID = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.BooksID);
+                    table.PrimaryKey("PK_UserInfo", x => x.UserInfoID);
                     table.ForeignKey(
-                        name: "Fk_AuthorID",
+                        name: "FK_UserInfo_AspNetUsers_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BooksAuthors",
+                columns: table => new
+                {
+                    AuthorID = table.Column<int>(type: "int", nullable: false),
+                    BooksID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BooksAuthor", x => new { x.BooksID, x.AuthorID });
+                    table.ForeignKey(
+                        name: "FK_BooksAuthor_Author",
                         column: x => x.AuthorID,
                         principalTable: "Authors",
                         principalColumn: "AuthorID");
                     table.ForeignKey(
-                        name: "Fk_Genres",
-                        column: x => x.GenerID,
-                        principalTable: "Genres",
-                        principalColumn: "GenerID");
+                        name: "FK_BooksAuthor_Books",
+                        column: x => x.BooksID,
+                        principalTable: "Books",
+                        principalColumn: "BooksID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "BooksUsers",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    BooksID = table.Column<int>(type: "int", nullable: false)
+                    BooksID = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BooksUsers", x => new { x.BooksID, x.UserID });
+                    table.PrimaryKey("PK_BooksUsers", x => new { x.BooksID, x.ClientId });
                     table.ForeignKey(
-                        name: "FK_BooksUsers_Books",
+                        name: "FK_BooksUsers_AspNetUsers_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BooksUsers_Books_BooksID",
                         column: x => x.BooksID,
                         principalTable: "Books",
-                        principalColumn: "BooksID");
-                    table.ForeignKey(
-                        name: "FK_BooksUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "UserInfo",
-                        principalColumn: "UserInfoID");
+                        principalColumn: "BooksID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,27 +278,50 @@ namespace CoolBooks.Migrations
                 {
                     ReviewsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BookID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Text = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
-                    Rating = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rating = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime", nullable: true)
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BookID = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ReviewsID);
                     table.ForeignKey(
-                        name: "Fk_Books_Reviews",
+                        name: "FK_Reviews_AspNetUsers_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reviews_Books_BookID",
                         column: x => x.BookID,
                         principalTable: "Books",
-                        principalColumn: "BooksID");
+                        principalColumn: "BooksID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BooksGenres",
+                columns: table => new
+                {
+                    BooksID = table.Column<int>(type: "int", nullable: false),
+                    GenreID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BooksGenres", x => new { x.BooksID, x.GenreID });
                     table.ForeignKey(
-                        name: "Fk_User_Reviews",
-                        column: x => x.UserID,
-                        principalTable: "UserInfo",
-                        principalColumn: "UserInfoID");
+                        name: "FK_BooksGenres_Author",
+                        column: x => x.GenreID,
+                        principalTable: "Genres",
+                        principalColumn: "GenreID");
+                    table.ForeignKey(
+                        name: "FK_BooksGenres_Books",
+                        column: x => x.BooksID,
+                        principalTable: "Books",
+                        principalColumn: "BooksID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -323,19 +364,19 @@ namespace CoolBooks.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorID",
-                table: "Books",
+                name: "IX_BooksAuthors_AuthorID",
+                table: "BooksAuthors",
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_GenerID",
-                table: "Books",
-                column: "GenerID");
+                name: "IX_BooksGenres_GenreID",
+                table: "BooksGenres",
+                column: "GenreID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BooksUsers_UserID",
+                name: "IX_BooksUsers_ClientId",
                 table: "BooksUsers",
-                column: "UserID");
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_BookID",
@@ -343,9 +384,14 @@ namespace CoolBooks.Migrations
                 column: "BookID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserID",
+                name: "IX_Reviews_ClientId",
                 table: "Reviews",
-                column: "UserID");
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserInfo_ClientId",
+                table: "UserInfo",
+                column: "ClientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -366,28 +412,34 @@ namespace CoolBooks.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BooksAuthors");
+
+            migrationBuilder.DropTable(
+                name: "BooksGenres");
+
+            migrationBuilder.DropTable(
                 name: "BooksUsers");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Books");
-
-            migrationBuilder.DropTable(
                 name: "UserInfo");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Books");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace CoolBooks.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var coolbooksContext = _context.Books.Include(b => b.Author).Include(b => b.Gener);
+            var coolbooksContext = _context.Books.Include(b => b.BooksAuthors).Include(b => b.BooksGenres);
             return View(await coolbooksContext.ToListAsync());
         }
 
@@ -36,8 +36,8 @@ namespace CoolBooks.Controllers
             }
 
             var books = await _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Gener)
+                .Include(b => b.BooksAuthors)
+                .Include(b => b.BooksGenres)
                 .FirstOrDefaultAsync(m => m.BooksID == id);
             if (books == null)
             {
@@ -51,7 +51,7 @@ namespace CoolBooks.Controllers
         public IActionResult Create()
         {
             ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "FullName");
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "Name");
+            ViewData["GenerID"] = new SelectList(_context.Genres, "GenreID", "Name");
             return View();
         }
 
@@ -68,8 +68,8 @@ namespace CoolBooks.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.AuthorID);
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.GenerID);
+            //ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
+            //ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
             return View(books);
         }
 
@@ -86,8 +86,8 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.AuthorID);
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.GenerID);
+            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
+            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
             return View(books);
         }
 
@@ -123,8 +123,8 @@ namespace CoolBooks.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.AuthorID);
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.GenerID);
+            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
+            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
             return View(books);
         }
 
@@ -137,8 +137,8 @@ namespace CoolBooks.Controllers
             }
 
             var books = await _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Gener)
+                .Include(b => b.BooksAuthors)
+                .Include(b => b.BooksGenres)
                 .FirstOrDefaultAsync(m => m.BooksID == id);
             if (books == null)
             {
