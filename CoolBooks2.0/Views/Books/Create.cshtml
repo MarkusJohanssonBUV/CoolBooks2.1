@@ -16,15 +16,16 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="BooksUsers" class="control-label"></label>
                 <input asp-for="BooksUsers" class="form-control" />
                 <span asp-validation-for="BooksUsers" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
-                <label asp-for="AuthorID" class="control-label"></label>
-                <select asp-for="AuthorID" class ="form-control" asp-items="ViewBag.AuthorID"></select>
+                <label asp-for="BooksAuthors" class="control-label"></label>
+                <select asp-for="BooksAuthors" class ="form-control" asp-items="ViewBag.AuthorID"></select>
             </div>
+             <a asp-area="" asp-controller="Authors" asp-action="Create">Hittar du inte författaren i listan? Tryck här för att lägga till.</a>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -45,20 +46,21 @@
                 <input asp-for="ImagePath" class="form-control" />
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="IsDeleted" class="control-label"></label>
                 <input asp-for="IsDeleted" class="form-control" />
                 <span asp-validation-for="IsDeleted" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Created" class="control-label"></label>
                 <input asp-for="Created" class="form-control" />
                 <span asp-validation-for="Created" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GenerID" class="control-label"></label>
-                <select asp-for="GenerID" class ="form-control" asp-items="ViewBag.GenerID"></select>
+                <label asp-for="BooksGenres" class="control-label"></label>
+                <select asp-for="BooksGenres" class ="form-control" asp-items="ViewBag.GenerID"></select>
             </div>
+            <a asp-area="" asp-controller="Genres" asp-action="Create">Hittar du inte genren i listan? Tryck här för att lägga till.</a>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

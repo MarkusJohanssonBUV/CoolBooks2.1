@@ -12,6 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-#e6e6e6 border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <partial name="_LoginPartial"/>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CoolBooks</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -58,14 +59,7 @@
                             <!-- Fixa så enbart admin ser detta -->
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Genres">Genres</a>
                         </li>
-                        <li class="nav-item">
-                            <!-- Försök få till Höger -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Försök få till Höger -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Log In</a>
-                        </li>
+                        
                     </ul>
                 </div>
             </div>

@@ -22,6 +22,14 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[BooksAuthors]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BooksGenres]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[BooksUsers]",
          "ObjectType": 0
       },
@@ -38,11 +46,11 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "MARKUS\\MARKUSSQLEXPRESS.Coolbooks4",
+   "UiHint": "MARKUS\\MARKUSSQLEXPRESS.CoolBooks",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": false,
+   "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": false,

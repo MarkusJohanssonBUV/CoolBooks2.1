@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CoolBooks.Models.UserInfo>
+﻿@*@model IEnumerable<CoolBooks.Models.UserInfo>
 
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserID)
+                @Html.DisplayNameFor(model => model.UserInfoID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -46,7 +46,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserID)
+                @Html.DisplayFor(modelItem => item.UserInfoID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
@@ -80,3 +80,4 @@
 </table>
 </body>
 </html>
+*@

@@ -1,5 +1,6 @@
 using CoolBooks.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CoolbooksContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoolbooksContext")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<CoolbooksContext>();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -23,11 +27,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+    app.UseEndpoints(endpoints => endpoints.MapRazorPages());
 app.Run();
