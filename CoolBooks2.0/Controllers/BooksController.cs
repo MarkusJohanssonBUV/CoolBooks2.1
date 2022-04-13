@@ -24,6 +24,7 @@ namespace CoolBooks.Controllers
         public async Task<IActionResult> Index()
         {
             var coolbooksContext = _context.Books.Include(b => b.BooksAuthors).Include(b => b.BooksGenres);
+            ViewData["Author"] = _context.Authors;
             return View(await coolbooksContext.ToListAsync());
         }
 
@@ -76,19 +77,22 @@ namespace CoolBooks.Controllers
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+           if (id == null)
+        {
+            return NotFound();
+        }
 
-            var books = await _context.Books.FindAsync(id);
-            if (books == null)
-            {
-                return NotFound();
-            }
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
-            return View(books);
+        var books = await _context.Books
+             .Include(s => s.BooksAuthors).ThenInclude(s => s.Author)
+                 .Where(s => s.BooksID == id)
+             .AsNoTracking()
+             .FirstOrDefaultAsync();
+
+        if (books == null)
+        {
+            return NotFound();
+        }
+        return View(books);
         }
 
         // POST: Books/Edit/5

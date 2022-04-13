@@ -1,6 +1,7 @@
 using CoolBooks.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using CoolBooks.Areas.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CoolbooksContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoolbooksContext")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<CoolbooksContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CoolbooksContext>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

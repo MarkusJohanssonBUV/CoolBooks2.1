@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using CoolBooks.Areas.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoolBooks.Data
 {
-    public partial class CoolbooksContext : IdentityDbContext<IdentityUser>
+    public partial class CoolbooksContext : IdentityDbContext<ApplicationUser>
     {
         
         public CoolbooksContext(DbContextOptions<CoolbooksContext> options): base(options)
@@ -26,6 +28,7 @@ namespace CoolBooks.Data
         public virtual DbSet<Reviews> Reviews { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -37,8 +40,10 @@ namespace CoolBooks.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+      
+            modelBuilder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+
             base.OnModelCreating(modelBuilder);
-           
 
             modelBuilder.Entity<BooksAuthors>(entity =>
             {
@@ -97,6 +102,16 @@ namespace CoolBooks.Data
                     .IsUnicode(false);
             });
 
+        }
+    }
+
+    public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
+    {
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+        {
+            builder.Property(u =>u.FirstName).HasMaxLength(255);
+            builder.Property(u => u.LastName).HasMaxLength(255);
+            builder.Property(u => u.Created).HasColumnType("datetime2");
         }
     }
 }
