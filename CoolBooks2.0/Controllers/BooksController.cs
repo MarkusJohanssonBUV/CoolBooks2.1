@@ -61,17 +61,50 @@ namespace CoolBooks.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BooksID,UserID,AuthorID,Title,Description,ISBN,ImagePath,IsDeleted,Created,GenerID")] Books books)
+        public async Task<IActionResult> Create(BooksViewModel booksView)
         {
-            if (ModelState.IsValid)
+            var book = new Books();
+            book.Title = booksView.Title;
+            book.Description = booksView.Description;
+            book.ISBN = booksView.ISBN;
+            book.ImagePath = booksView.ImagePath;
+            book.Created = DateTime.Now;
+
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
+
+            foreach (var AutorId in booksView.Autors)
             {
-                _context.Add(books);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var bookArthor = new BooksAuthors();
+                bookArthor.AuthorID = AutorId;
+                bookArthor.BooksID = book.BooksID;
+                await _context.BooksAuthors.AddAsync(bookArthor);
+                
             }
+            await _context.SaveChangesAsync();
+
+            foreach (var GenreId in booksView.Genres)
+            {
+
+                var bookGenre = new BooksGenres();
+                bookGenre.GenreID = GenreId;
+                bookGenre.BooksID = book.BooksID;
+                await _context.BooksGenres.AddAsync(bookGenre);
+                
+            }
+            await _context.SaveChangesAsync();
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(book);
+            //    await _context.SaveChangesAsync();
+
+            //}
             //ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
             //ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
-            return View(books);
+
+            return RedirectToAction(nameof(Index));
+            //return View(book);
         }
 
         // GET: Books/Edit/5
