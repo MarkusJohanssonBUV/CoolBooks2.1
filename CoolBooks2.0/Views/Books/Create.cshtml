@@ -16,14 +16,11 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="BooksUsers" class="control-label"></label>
-                <input asp-for="BooksUsers" class="form-control" />
-                <span asp-validation-for="BooksUsers" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
-                <label asp-for="BooksAuthors" class="control-label"></label>
-                <select asp-for="BooksAuthors" class ="form-control" asp-items="ViewBag.AuthorID"></select>
+                @Html.ListBox("AuthorID")
+                @Html.Hidden("AuthorID")
+                @*<label asp-for=@ViewData["AuthorID"] class="control-label"></label>
+                <select asp-for=@ViewData["AuthorID"]  class ="form-control" asp-items="ViewBag.AuthorID"></select>*@
             </div>
              <a asp-area="" asp-controller="Authors" asp-action="Create">Hittar du inte författaren i listan? Tryck här för att lägga till.</a>
             <div class="form-group">

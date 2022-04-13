@@ -4,6 +4,7 @@ using CoolBooks.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolBooks.Migrations
 {
     [DbContext(typeof(CoolbooksContext))]
-    partial class CoolbooksContextModelSnapshot : ModelSnapshot
+    [Migration("20220412120235_ChangeDateTime")]
+    partial class ChangeDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace CoolBooks.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
