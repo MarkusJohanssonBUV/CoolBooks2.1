@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CoolBooks.Models.Books>
+﻿@model IEnumerable<CoolBooks.Models.BooksViewModel>
 
 @*@{
     Layout = null;
@@ -18,9 +18,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BooksUsers)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -34,16 +32,13 @@
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BooksAuthors)
+                @Html.DisplayNameFor(model => model.AuthorName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BooksGenres)
+                @Html.DisplayNameFor(model => model.GenreName)
             </th>
             <th></th>
         </tr>
@@ -51,9 +46,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BooksUsers)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -69,16 +61,28 @@
 
             </td>
             <td>
-                @Html.CheckBoxFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BooksAuthors)
+                <ul style = "list-style-type:circle">
+                @for (var i = 0; i < item.AuthorName.Count; i++)
+                {
+                    <li>
+                        @Html.DisplayFor(modelItem => item.AuthorName[i])<br />
+                    </li>
+                    
+                }
+               </ul>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BooksGenres)
+                <ul style = "list-style-type:circle">
+                 @for (var i = 0; i < item.GenreName.Count; i++)
+                {
+                     <li>
+                 @Html.DisplayFor(modelItem => item.GenreName[i])<br />
+                 </li>
+                }
+                </ul>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> |

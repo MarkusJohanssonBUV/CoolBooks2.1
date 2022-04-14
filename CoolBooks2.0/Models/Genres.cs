@@ -13,6 +13,6 @@ namespace CoolBooks.Models
         public string Description { get; set; }
         public DateTime? Created { get; set; }
 
-        public ICollection<BooksGenres> BooksGenres { get; set; }
+        public ICollection<BooksGenres> BooksFromGenres { get; set; }
     }
 }

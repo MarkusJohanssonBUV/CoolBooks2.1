@@ -15,7 +15,7 @@ namespace CoolBooks.Models
         public string LastName { get; set; }
         public DateTime? Created { get; set; }
 
-        public ICollection<BooksAuthors> BooksAuthors { get; set; }
+        public ICollection<BooksAuthors> BooksFromAutors { get; set; }
 
         [NotMapped]
         public string FullName

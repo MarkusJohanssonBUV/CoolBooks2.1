@@ -23,10 +23,9 @@ namespace CoolBooks.Models
         public string ImagePath { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? Created { get; set; }
-        //public int GenerID { get; set; }
 
-        public ICollection<BooksAuthors> BooksAuthors { get; set; }
-        public ICollection<BooksGenres> BooksGenres { get; set; }
+        public ICollection<BooksAuthors> AuthorsFromBooks { get; set; }
+        public ICollection<BooksGenres> GenresFromBooks { get; set; }
         public ICollection<BooksUsers> BooksUsers { get; set; }
         public ICollection<Reviews> Reviews { get; set; }
     }
