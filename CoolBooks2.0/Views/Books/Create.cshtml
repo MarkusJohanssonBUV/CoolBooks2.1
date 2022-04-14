@@ -39,14 +39,14 @@
             </div>
             <div class="form-group">
                
-                <label asp-for="Autors"class="control-label"></label>
-                <select asp-for="Autors" class ="form-control" asp-items="ViewBag.AuthorID"></select>
+                <label asp-for="AutorsId"class="control-label"></label>
+                <select asp-for="AutorsId" class ="form-control" asp-items="ViewBag.AuthorID"></select>
             </div>
              <a asp-area="" asp-controller="Authors" asp-action="Create">Hittar du inte författaren i listan? Tryck här för att lägga till.</a>
             
             <div class="form-group">
-                <label asp-for="Genres" class="control-label"></label>
-                <select asp-for="Genres" class ="form-control" asp-items="ViewBag.GenerID"></select>
+                <label asp-for="GenresId" class="control-label"></label>
+                <select asp-for="GenresId" class ="form-control" asp-items="ViewBag.GenerID"></select>
             </div>
             <a asp-area="" asp-controller="Genres" asp-action="Create">Hittar du inte genren i listan? Tryck här för att lägga till.</a>
             <div class="form-group">

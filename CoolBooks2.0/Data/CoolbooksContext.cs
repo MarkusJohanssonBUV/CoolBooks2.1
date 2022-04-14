@@ -51,13 +51,13 @@ namespace CoolBooks.Data
                     .HasName("PK_BooksAuthor");
 
                 entity.HasOne(d => d.Author)
-                    .WithMany(p => p.BooksAuthors)
+                    .WithMany(p => p.BooksFromAutors)
                     .HasForeignKey(d => d.AuthorID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BooksAuthor_Author");
 
                 entity.HasOne(d => d.Books)
-                    .WithMany(p => p.BooksAuthors)
+                    .WithMany(p => p.AuthorsFromBooks)
                     .HasForeignKey(d => d.BooksID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BooksAuthor_Books");
@@ -68,13 +68,13 @@ namespace CoolBooks.Data
                 entity.HasKey(e => new { e.BooksID, e.GenreID });
 
                 entity.HasOne(d => d.Books)
-                    .WithMany(p => p.BooksGenres)
+                    .WithMany(p => p.GenresFromBooks)
                     .HasForeignKey(d => d.BooksID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BooksGenres_Books");
 
                 entity.HasOne(d => d.Genre)
-                    .WithMany(p => p.BooksGenres)
+                    .WithMany(p => p.BooksFromGenres)
                     .HasForeignKey(d => d.GenreID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BooksGenres_Author");
