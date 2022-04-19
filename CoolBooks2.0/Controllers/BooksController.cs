@@ -21,77 +21,36 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
 
+            ViewData["Currentfilter"] = SearchString;
 
             var coolbooksContext = _context.Books
-                //.Include(b => b.AuthorsFromBooks)
-                //.ThenInclude(b => b.Author)
-                //.Include(a => a.GenresFromBooks)
-                //.ThenInclude(a => a.Genre)
-                .Select( p => new BooksViewModel
+            .Select(p => new BooksViewModel
                 {
                     BooksID = p.BooksID,
                     Title = p.Title,
                     Description = p.Description,
                     ISBN = p.ISBN,
                     ImagePath = p.ImagePath,
-                    GenreName= (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                    Created = p.Created,
+                    GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-
                 })
-                
-                
                 .ToList();
 
-            //var coolbooksAuthors = _context.Books
-                //.Include(b => b.AuthorsFromBooks)
-                //.ThenInclude(b => b.Author)
-                //.Include(a => a.GenresFromBooks)
-                //.ThenInclude(a => a.Genre)
-                //.SelectMany(a => a.AuthorsFromBooks, (c, i) => new BooksViewModel
-                //{
-                //    BooksID= c.BooksID,
-                //    AuthorName = i.Author.FullName,
-
-                //})
-
-
-                //.ToList();
-                //var ResultantList = coolbooksContext.Where(s => coolbooksAuthors.Any(l => (l.BooksID == s.BooksID))).Concat(coolbooksAuthors).ToList();
-
-            //var result = coolbooksContext.ForEach(i => coolbooksAuthors.Add(i));
-
-            //var view = new BooksViewModel();
-
-            //IEnumerable<BooksViewModel> books;
-
-            //books = (IEnumerable<BooksViewModel>)coolbooksContext;
-
-            //foreach (var Item in coolbooksContext)
-            //{
-
-            //    view.BooksID = Item.BooksID;
-            //    view.Description = Item.Description;
-            //    view.ISBN = Item.ISBN;
-            //    view.ImagePath = Item.ImagePath;
-
-            //        foreach (var item in Item.GenresFromBooks)
-            //        {
-            //        //view.GenreName = item.Genre.Name;
-            //        view.GenreName.Add(item.Genre.Name);
-            //        }
-
-            //        foreach (var item in Item.AuthorsFromBooks)
-            //        {
-            //        //view.AuthorName = item.Author.FullName;
-            //        view.AuthorName.Add(item.Author.FullName);
-            //        }
-
-            //}
-
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                 coolbooksContext = coolbooksContext
+                    .Where(p => p.GenreName.Where(x => x.ToLower().Contains(SearchString.ToLower())).Any() ||
+                                p.Title.ToLower().Contains(SearchString.ToLower()) ||
+                                p.AuthorName.Where(x=> x.ToLower().Contains(SearchString.ToLower())).Any())
+                                .ToList();
+            }
+             
             return View(coolbooksContext);
+
         }
 
         // GET: Books/Details/5
@@ -101,14 +60,6 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-
-
-
-
-            //if (books == null)
-            //{
-            //    return NotFound();
-            //}
 
             return View();
         }

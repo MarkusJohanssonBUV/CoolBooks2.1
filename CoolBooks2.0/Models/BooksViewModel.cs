@@ -17,7 +17,7 @@ namespace CoolBooks.Models
         public List<string> AuthorName { get; set; }
         public List<string> GenreName { get; set; }
 
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
 
         public List<int> AutorsId { get; set; }
         public List<int> GenresId { get; set; }
