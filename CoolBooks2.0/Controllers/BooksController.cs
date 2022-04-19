@@ -24,6 +24,7 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Books
+
         public async Task<IActionResult> Index(string Search)
         {
             //Search = Search.ToLower();
@@ -37,6 +38,7 @@ namespace CoolBooks.Controllers
                     ISBN = p.ISBN,
                     ImagePath = p.ImagePath,
                     Created = p.Created,
+
                     GenreName= (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
@@ -53,6 +55,7 @@ namespace CoolBooks.Controllers
             }
           
             return View(coolbooksContext);
+
         }
 
         // GET: Books/Details/5
@@ -62,6 +65,7 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
+
 
             var   coolbooksContext = _context.Books
                 .Where(p => p.BooksID == id)
@@ -86,6 +90,7 @@ namespace CoolBooks.Controllers
             //{
             //    return NotFound();
             //}
+
 
         }
 
