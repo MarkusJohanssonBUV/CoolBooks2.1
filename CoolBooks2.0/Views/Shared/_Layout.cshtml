@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-#e6e6e6 border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <partial name="_LoginPartial"/>
+                
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CoolBooks</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -20,25 +20,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                          @if (User.IsInRole("Admin"))
-                          {
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">AuthorsAdmin</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">GenresAdmin</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="Index">ReviewsAdmin</a>
-                            </li>
-
-                           
-
-                          }
-                        
+                          
+                        <li class="nav-item">
+                            <!-- About leder ingenstans just nu -->
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
                          <li class="nav-item">
                             <!-- About leder ingenstans just nu -->
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
@@ -47,29 +33,30 @@
                             <!-- Contact leder fortfarande till gamla Privacy, så den kan vi bara redigera för att passa det vi behöver sen -->
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                         </li>
-                        <li class="nav-item">
-                            <!-- Fixa så användara/Admin ser detta -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Books">Books</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Fixa så enbart admin ser detta -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reviews">Reviews</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Fixa så enbart admin ser detta -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Authors">Authors</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Fixa så enbart admin ser detta -->
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Genres">Genres</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Fixa så enbart admin ser detta -->
+                         <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                            </li>
+                     
+
+                        @if (User.IsInRole("Admin"))
+                          {
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Authors</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="Index">Reviews</a>
+                            </li>
+                               <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateRoles">CreateRoles</a>
                         </li>
-                        
+                          }
                     </ul>
                 </div>
+                <partial name="_LoginPartial"/>
             </div>
         </nav>
     </header>
