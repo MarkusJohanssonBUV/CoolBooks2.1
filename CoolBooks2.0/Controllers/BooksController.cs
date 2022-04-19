@@ -8,28 +8,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoolBooks.Data;
 using CoolBooks.Models;
+using Microsoft.AspNetCore.Identity;
+using CoolBooks.Areas.Identity;
 
 namespace CoolBooks.Controllers
 {
     public class BooksController : Controller
     {
         private readonly CoolbooksContext _context;
-
-        public BooksController(CoolbooksContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public BooksController(CoolbooksContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Search)
         {
-
+            //Search = Search.ToLower();
 
             var coolbooksContext = _context.Books
-                //.Include(b => b.AuthorsFromBooks)
-                //.ThenInclude(b => b.Author)
-                //.Include(a => a.GenresFromBooks)
-                //.ThenInclude(a => a.Genre)
                 .Select( p => new BooksViewModel
                 {
                     BooksID = p.BooksID,
@@ -37,60 +36,22 @@ namespace CoolBooks.Controllers
                     Description = p.Description,
                     ISBN = p.ISBN,
                     ImagePath = p.ImagePath,
+                    Created = p.Created,
                     GenreName= (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-
+                    UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                 })
-                
-                
                 .ToList();
 
-            //var coolbooksAuthors = _context.Books
-                //.Include(b => b.AuthorsFromBooks)
-                //.ThenInclude(b => b.Author)
-                //.Include(a => a.GenresFromBooks)
-                //.ThenInclude(a => a.Genre)
-                //.SelectMany(a => a.AuthorsFromBooks, (c, i) => new BooksViewModel
-                //{
-                //    BooksID= c.BooksID,
-                //    AuthorName = i.Author.FullName,
-
-                //})
-
-
-                //.ToList();
-                //var ResultantList = coolbooksContext.Where(s => coolbooksAuthors.Any(l => (l.BooksID == s.BooksID))).Concat(coolbooksAuthors).ToList();
-
-            //var result = coolbooksContext.ForEach(i => coolbooksAuthors.Add(i));
-
-            //var view = new BooksViewModel();
-
-            //IEnumerable<BooksViewModel> books;
-
-            //books = (IEnumerable<BooksViewModel>)coolbooksContext;
-
-            //foreach (var Item in coolbooksContext)
-            //{
-
-            //    view.BooksID = Item.BooksID;
-            //    view.Description = Item.Description;
-            //    view.ISBN = Item.ISBN;
-            //    view.ImagePath = Item.ImagePath;
-
-            //        foreach (var item in Item.GenresFromBooks)
-            //        {
-            //        //view.GenreName = item.Genre.Name;
-            //        view.GenreName.Add(item.Genre.Name);
-            //        }
-
-            //        foreach (var item in Item.AuthorsFromBooks)
-            //        {
-            //        //view.AuthorName = item.Author.FullName;
-            //        view.AuthorName.Add(item.Author.FullName);
-            //        }
-
-            //}
-
+            if (!string.IsNullOrEmpty(Search))
+            {
+                coolbooksContext = coolbooksContext.Where(p => p.Title.ToLower().Contains(Search.ToLower()) ||
+                 p.GenreName.Where(x=> x.ToLower().Contains(Search.ToLower())).Any()  ||
+                 p.AuthorName.Where(x => x.ToLower().Contains(Search.ToLower())).Any() ||
+                 p.UserName.Where(x => x.ToLower().Contains(Search.ToLower())).Any()
+                 ).ToList();
+            }
+          
             return View(coolbooksContext);
         }
 
@@ -102,7 +63,23 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
+            var   coolbooksContext = _context.Books
+                .Where(p => p.BooksID == id)
+                .Select(p => new BooksViewModel
+                {
+                    BooksID = p.BooksID,
+                    Title = p.Title,
+                    Description = p.Description,
+                    ISBN = p.ISBN,
+                    ImagePath = p.ImagePath,
+                    Created = p.Created,
+                    GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                    AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
+                }).AsEnumerable();
 
+            //coolbooksContext.ToList();
+
+            return View(coolbooksContext);
 
 
             //if (books == null)
@@ -110,7 +87,6 @@ namespace CoolBooks.Controllers
             //    return NotFound();
             //}
 
-            return View();
         }
 
         // GET: Books/Create
@@ -134,6 +110,7 @@ namespace CoolBooks.Controllers
             book.ISBN = booksView.ISBN;
             book.ImagePath = booksView.ImagePath;
             book.Created = DateTime.Now;
+            
 
             await _context.Books.AddAsync(book);
             await _context.SaveChangesAsync();
@@ -148,6 +125,13 @@ namespace CoolBooks.Controllers
                 
             }
             await _context.SaveChangesAsync();
+
+         
+                var bookUser = new BooksUsers();
+                bookUser.ClientId = _userManager.GetUserId(HttpContext.User);
+                bookUser.BooksID = book.BooksID;
+                await _context.BooksUsers.AddAsync(bookUser);
+                await _context.SaveChangesAsync();
 
             foreach (var GenreId in booksView.GenresId)
             {
@@ -180,19 +164,28 @@ namespace CoolBooks.Controllers
             return NotFound();
         }
 
-        var books = await _context.Books
-             .Include(s => s.AuthorsFromBooks).ThenInclude(s => s.Author)
-                 .Where(s => s.BooksID == id)
-             .AsNoTracking()
-             .FirstOrDefaultAsync();
-            
             
 
-        if (books == null)
-        {
-            return NotFound();
-        }
-        return View(books);
+            var coolbooksContext = _context.Books
+                  .Where(p => p.BooksID == id)
+                  .Select(p => new BooksViewModel
+                  {
+                      BooksID = p.BooksID,
+                      Title = p.Title,
+                      Description = p.Description,
+                      ISBN = p.ISBN,
+                      ImagePath = p.ImagePath,
+                      Created = p.Created,
+                      //GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                      //AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
+                  });
+
+            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "FullName");
+            ViewData["GenerID"] = new SelectList(_context.Genres, "GenreID", "Name");
+
+            coolbooksContext.ToList();
+            
+            return View(coolbooksContext);
         }
 
         // POST: Books/Edit/5
