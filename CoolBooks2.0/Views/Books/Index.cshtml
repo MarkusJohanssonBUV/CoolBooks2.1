@@ -1,4 +1,7 @@
-﻿@model IEnumerable<CoolBooks.Models.BooksViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+@using CoolBooks.Areas.Identity;
+@model IEnumerable<CoolBooks.Models.BooksViewModel>
+@inject UserManager<ApplicationUser> UserManager
 
 @*@{
     Layout = null;
@@ -12,14 +15,16 @@
     <title>Index</title>
 </head>
 <body>
-    <form asp-controller="Books" asp-action="index" method="get">
-        <div class= "form-group">
-            <label for="SearchString">Search</label>
-            <input type="text" name="SearchString"
-            value="@ViewData["Currentfilter"]"/>
-            <input type="submit" value="Search" class="btn btn-primary"/>
-        </div>
-    </form>
+
+
+    <form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+
+        Search: <input type="text"  name="Search"/>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -47,6 +52,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.GenreName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th></th>
         </tr>
@@ -93,7 +101,25 @@
                 </ul>
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> |
+                <ul style = "list-style-type:circle">
+                 @for (var i = 0; i < item.UserName.Count; i++)
+                {
+                     <li>
+                 @Html.DisplayFor(modelItem => item.UserName[i])<br />
+                 </li>
+                }
+                </ul>
+            </td>
+            <td>
+                 @for (var i = 0; i < item.UserName.Count; i++)
+                {
+                     @if (User.IsInRole("Admin") || item.UserName[i] == UserManager.GetUserName(User))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
+                        }
+                }
+                
+                
                 <a asp-action="Details" asp-route-id="@item.BooksID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>
             </td>
