@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolBooks.Migrations
 {
     [DbContext(typeof(CoolbooksContext))]
-    [Migration("20220412104612_CustomIdentity")]
-    partial class CustomIdentity
+    [Migration("20220419095554_Add-comments")]
+    partial class Addcomments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,82 @@ namespace CoolBooks.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CoolBooks.Areas.Identity.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
 
             modelBuilder.Entity("CoolBooks.Models.Authors", b =>
                 {
@@ -65,6 +141,9 @@ namespace CoolBooks.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsBookOfTheWeek")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -148,6 +227,37 @@ namespace CoolBooks.Migrations
                         .HasName("Pk_GenerID");
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.ReviewComents", b =>
+                {
+                    b.Property<int>("ReviewComentsID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewComentsID"), 1L, 1);
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("React")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReviewComentsID");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ReviewsID");
+
+                    b.ToTable("ReviewComents");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
@@ -276,77 +386,6 @@ namespace CoolBooks.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -432,36 +471,16 @@ namespace CoolBooks.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CoolBooks.Areas.Identity.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
             modelBuilder.Entity("CoolBooks.Models.BooksAuthors", b =>
                 {
                     b.HasOne("CoolBooks.Models.Authors", "Author")
-                        .WithMany("BooksAuthors")
+                        .WithMany("BooksFromAutors")
                         .HasForeignKey("AuthorID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksAuthor_Author");
 
                     b.HasOne("CoolBooks.Models.Books", "Books")
-                        .WithMany("BooksAuthors")
+                        .WithMany("AuthorsFromBooks")
                         .HasForeignKey("BooksID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksAuthor_Books");
@@ -474,13 +493,13 @@ namespace CoolBooks.Migrations
             modelBuilder.Entity("CoolBooks.Models.BooksGenres", b =>
                 {
                     b.HasOne("CoolBooks.Models.Books", "Books")
-                        .WithMany("BooksGenres")
+                        .WithMany("GenresFromBooks")
                         .HasForeignKey("BooksID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksGenres_Books");
 
                     b.HasOne("CoolBooks.Models.Genres", "Genre")
-                        .WithMany("BooksGenres")
+                        .WithMany("BooksFromGenres")
                         .HasForeignKey("GenreID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksGenres_Author");
@@ -498,7 +517,7 @@ namespace CoolBooks.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,6 +528,25 @@ namespace CoolBooks.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("CoolBooks.Models.ReviewComents", b =>
+                {
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoolBooks.Models.Reviews", "Reviews")
+                        .WithMany("ReviewComent")
+                        .HasForeignKey("ReviewsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Reviews");
+                });
+
             modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
                 {
                     b.HasOne("CoolBooks.Models.Books", "Book")
@@ -517,7 +555,7 @@ namespace CoolBooks.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
@@ -528,7 +566,7 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("CoolBooks.Models.UserInfo", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
@@ -546,7 +584,7 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -555,7 +593,7 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -570,7 +608,7 @@ namespace CoolBooks.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,7 +617,7 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -588,23 +626,28 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("CoolBooks.Models.Authors", b =>
                 {
-                    b.Navigation("BooksAuthors");
+                    b.Navigation("BooksFromAutors");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Books", b =>
                 {
-                    b.Navigation("BooksAuthors");
-
-                    b.Navigation("BooksGenres");
+                    b.Navigation("AuthorsFromBooks");
 
                     b.Navigation("BooksUsers");
+
+                    b.Navigation("GenresFromBooks");
 
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Genres", b =>
                 {
-                    b.Navigation("BooksGenres");
+                    b.Navigation("BooksFromGenres");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
+                {
+                    b.Navigation("ReviewComent");
                 });
 #pragma warning restore 612, 618
         }
