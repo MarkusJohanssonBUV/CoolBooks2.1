@@ -15,9 +15,9 @@ namespace CoolBooks.Models
         public string Rating { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? Created { get; set; }
-
         public int BookID { get; set; }
         public Books Book { get; set; }
+        public ICollection<ReviewComents> ReviewComent{ get; set; }
 
         public string ClientId { get; set; }
 
