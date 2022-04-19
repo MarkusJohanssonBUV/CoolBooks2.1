@@ -141,7 +141,7 @@ namespace CoolBooks.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                   
+                 
                     if (User.IsInRole("Admin") && Input.CreateAdmin)
                     {
                         _userManager.AddToRoleAsync(user, "Admin").Wait();

@@ -111,13 +111,15 @@
                 </ul>
             </td>
             <td>
-                 @for (var i = 0; i < item.UserName.Count; i++)
-                {
-                     @if (User.IsInRole("Admin") || item.UserName[i] == UserManager.GetUserName(User))
+                 @if (User.IsInRole("Admin") || item.UserName[0] == UserManager.GetUserName(User)) 
                         {
-                            <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
+                             @for (var i = 0; i < item.UserName.Count; i++)
+                            {
+                    
+                                        <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
+                       
+                            }
                         }
-                }
                 
                 
                 <a asp-action="Details" asp-route-id="@item.BooksID">Details</a> |
