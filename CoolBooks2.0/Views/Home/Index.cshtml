@@ -1,8 +1,93 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using CoolBooks.Areas.Identity;
+@model IEnumerable<CoolBooks.Models.BooksViewModel>
+@inject UserManager<ApplicationUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
     <img src="https://i.ibb.co/Lz6KPZH/Sk-rmbild-2022-04-06-133234.png" alt="Index">
+    <h1>Welcome to CoolBooks!</h1>
     <p>Tänkt design ovan main page</p>
 </div>
+
+@*@{
+    Layout = null;
+}
+*@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+@foreach (var item in Model) 
+{
+
+@if(item.IsBookOfTheWeek == true)
+{
+
+
+<div class="grid-container">
+ 
+    
+
+        <table>
+            <tr>
+                <td> <h3>Book of the week!</h3></td>
+                </tr>
+                <tr>
+                <td>
+                <img alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)">
+                @*<a href="@Html.DisplayFor(modelItem => item.ImagePath)">@Html.DisplayFor(modelItem => item.ImagePath)</a>*@
+                </td>
+            </tr>
+        </table>
+            <table>
+                  
+                        <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                        </tr>
+                        <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        </tr>
+                        <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <ul style = "list-style-type:circle">
+                                @for (var i = 0; i < item.AuthorName.Count; i++)
+                                {
+                                    <li>
+                                        @Html.DisplayFor(modelItem => item.AuthorName[i])<br />
+                                    </li>
+                    
+                                }
+                            </ul>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <ul style = "list-style-type:circle">
+                                @for (var i = 0; i < item.GenreName.Count; i++)
+                                {
+                                    <li>
+                                        @Html.DisplayFor(modelItem => item.GenreName[i])<br />
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                    </tr>
+            </table>
+
+
+    
+</div>
+}}
+</body>
+</html>
