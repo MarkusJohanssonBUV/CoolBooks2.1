@@ -45,12 +45,10 @@ namespace CoolBooks.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -142,6 +140,9 @@ namespace CoolBooks.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsBookOfTheWeek")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -224,6 +225,37 @@ namespace CoolBooks.Migrations
                         .HasName("Pk_GenerID");
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.ReviewComents", b =>
+                {
+                    b.Property<int>("ReviewComentsID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewComentsID"), 1L, 1);
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("React")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReviewComentsID");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ReviewsID");
+
+                    b.ToTable("ReviewComents");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
@@ -440,13 +472,13 @@ namespace CoolBooks.Migrations
             modelBuilder.Entity("CoolBooks.Models.BooksAuthors", b =>
                 {
                     b.HasOne("CoolBooks.Models.Authors", "Author")
-                        .WithMany("BooksAuthors")
+                        .WithMany("BooksFromAutors")
                         .HasForeignKey("AuthorID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksAuthor_Author");
 
                     b.HasOne("CoolBooks.Models.Books", "Books")
-                        .WithMany("BooksAuthors")
+                        .WithMany("AuthorsFromBooks")
                         .HasForeignKey("BooksID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksAuthor_Books");
@@ -459,13 +491,13 @@ namespace CoolBooks.Migrations
             modelBuilder.Entity("CoolBooks.Models.BooksGenres", b =>
                 {
                     b.HasOne("CoolBooks.Models.Books", "Books")
-                        .WithMany("BooksGenres")
+                        .WithMany("GenresFromBooks")
                         .HasForeignKey("BooksID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksGenres_Books");
 
                     b.HasOne("CoolBooks.Models.Genres", "Genre")
-                        .WithMany("BooksGenres")
+                        .WithMany("BooksFromGenres")
                         .HasForeignKey("GenreID")
                         .IsRequired()
                         .HasConstraintName("FK_BooksGenres_Author");
@@ -492,6 +524,25 @@ namespace CoolBooks.Migrations
                     b.Navigation("Books");
 
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.ReviewComents", b =>
+                {
+                    b.HasOne("CoolBooks.Areas.Identity.ApplicationUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CoolBooks.Models.Reviews", "Reviews")
+                        .WithMany("ReviewComent")
+                        .HasForeignKey("ReviewsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
@@ -573,23 +624,28 @@ namespace CoolBooks.Migrations
 
             modelBuilder.Entity("CoolBooks.Models.Authors", b =>
                 {
-                    b.Navigation("BooksAuthors");
+                    b.Navigation("BooksFromAutors");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Books", b =>
                 {
-                    b.Navigation("BooksAuthors");
-
-                    b.Navigation("BooksGenres");
+                    b.Navigation("AuthorsFromBooks");
 
                     b.Navigation("BooksUsers");
+
+                    b.Navigation("GenresFromBooks");
 
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("CoolBooks.Models.Genres", b =>
                 {
-                    b.Navigation("BooksGenres");
+                    b.Navigation("BooksFromGenres");
+                });
+
+            modelBuilder.Entity("CoolBooks.Models.Reviews", b =>
+                {
+                    b.Navigation("ReviewComent");
                 });
 #pragma warning restore 612, 618
         }

@@ -24,6 +24,8 @@ namespace CoolBooks.Models
         public bool IsDeleted { get; set; }
         public DateTime? Created { get; set; }
 
+        public bool IsBookOfTheWeek { get; set; }
+
         public ICollection<BooksAuthors> AuthorsFromBooks { get; set; }
         public ICollection<BooksGenres> GenresFromBooks { get; set; }
         public ICollection<BooksUsers> BooksUsers { get; set; }

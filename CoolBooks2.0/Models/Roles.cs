@@ -2,9 +2,10 @@
 
 namespace CoolBooks.Models
 {
+    [NotMapped]
     public class Roles
     {
-        [NotMapped]
+        
         
         public int Id { get; set; }
 

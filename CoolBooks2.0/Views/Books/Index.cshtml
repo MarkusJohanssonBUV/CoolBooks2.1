@@ -26,105 +26,180 @@
 </form>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-secondary" asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
+
+@if (User.IsInRole("Admin")) {
+    <table class="table">
+        <thead>
+            <tr>
            
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ISBN)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuthorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GenreName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) 
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISBN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AuthorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GenreName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    <img alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)">
+                    @*<a href="@Html.DisplayFor(modelItem => item.ImagePath)">@Html.DisplayFor(modelItem => item.ImagePath)</a>*@
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    <ul style = "list-style-type:circle">
+                    @for (var i = 0; i < item.AuthorName.Count; i++)
+                    {
+                        <li>
+                            @Html.DisplayFor(modelItem => item.AuthorName[i])<br />
+                        </li>
+                    
+                    }
+                   </ul>
+                </td>
+                <td>
+                    <ul style = "list-style-type:circle">
+                     @for (var i = 0; i < item.GenreName.Count; i++)
+                    {
+                         <li>
+                     @Html.DisplayFor(modelItem => item.GenreName[i])<br />
+                     </li>
+                    }
+                    </ul>
+                </td>
+                <td>
+                    <ul style = "list-style-type:circle">
+                     @for (var i = 0; i < item.UserName.Count; i++)
+                    {
+                         <li>
+                     @Html.DisplayFor(modelItem => item.UserName[i])<br />
+                     </li>
+                    }
+                    </ul>
+                </td>
+                <td>
+                     @for (var i = 0; i < item.UserName.Count; i++)
+                    {
+                         @if (User.IsInRole("Admin") || item.UserName[i] == UserManager.GetUserName(User))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
+                            }
+                    }
+                
+                
+                    <a asp-action="Details" asp-route-id="@item.BooksID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+}
+@if (!User.IsInRole("Admin"))
 {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISBN)
-            </td>
-            <td>
-                <img alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)">
+    
+    <div>
+        <table class="table table-dark table-striped table-borderless table-hover align-top">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th style="width: 12.5%">
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th style="width: 8%">
+                    @Html.DisplayNameFor(model => model.AuthorName)
+                </th>
+                <th style="width: 12.5%">
+                    @Html.DisplayNameFor(model => model.GenreName)
+                </th>
+                <th style="width: 12.5%">
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody class="table-light">
+    @{
+        int row = 1;
+    
+    foreach (var item in Model) {
+            <tr class="table-info table-light">
+                <th scope="row">@row</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                <img width="240px" height="400px" alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)">
                 @*<a href="@Html.DisplayFor(modelItem => item.ImagePath)">@Html.DisplayFor(modelItem => item.ImagePath)</a>*@
 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                <ul style = "list-style-type:circle">
-                @for (var i = 0; i < item.AuthorName.Count; i++)
-                {
-                    <li>
-                        @Html.DisplayFor(modelItem => item.AuthorName[i])<br />
-                    </li>
-                    
-                }
-               </ul>
-            </td>
-            <td>
-                <ul style = "list-style-type:circle">
-                 @for (var i = 0; i < item.GenreName.Count; i++)
-                {
-                     <li>
-                 @Html.DisplayFor(modelItem => item.GenreName[i])<br />
-                 </li>
-                }
-                </ul>
-            </td>
-            <td>
-                <ul style = "list-style-type:circle">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuthorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GenreName)
+                </td>
+                <td class="align-middle">
                  @for (var i = 0; i < item.UserName.Count; i++)
-                {
-                     <li>
-                 @Html.DisplayFor(modelItem => item.UserName[i])<br />
-                 </li>
-                }
-                </ul>
-            </td>
-            <td>
-                 @for (var i = 0; i < item.UserName.Count; i++)
-                {
-                     @if (User.IsInRole("Admin") || item.UserName[i] == UserManager.GetUserName(User))
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
-                        }
-                }
-                <a asp-action="Details" asp-route-id="@item.BooksID">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>                
-            </td>
-        </tr>
+                    {
+                         @if (User.IsInRole("Admin") || item.UserName[i] == UserManager.GetUserName(User))
+                            {
+                                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
+                            }
+                    }
+                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.BooksID">View</a>
+                </td>
+            </tr>
+        row = row + 1;
+    }
 }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+    </div>
+}
 </body>
 </html>
