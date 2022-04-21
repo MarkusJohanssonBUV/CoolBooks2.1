@@ -60,7 +60,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model) 
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -118,10 +119,8 @@
                             <a asp-action="Edit" asp-route-id="@item.BooksID">Edit</a> 
                         }
                 }
-                
-                
-                <a asp-action="Details" asp-route-id="@item.BooksID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.BooksID">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>                
             </td>
         </tr>
 }
