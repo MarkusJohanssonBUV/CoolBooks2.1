@@ -38,8 +38,10 @@ namespace CoolBooks.Controllers
                     ISBN = p.ISBN,
                     ImagePath = p.ImagePath,
                     Created = p.Created,
-
-                    GenreName= (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                    IsDeleted = p.IsDeleted,
+                    GenresId = (List<int>)p.GenresFromBooks.Select(m => m.Genre.GenreID),
+                    GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                    AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                 })
@@ -97,8 +99,8 @@ namespace CoolBooks.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "FullName");
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenreID", "Name");
+            ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
+            ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
             return View();
         }
 
@@ -181,53 +183,88 @@ namespace CoolBooks.Controllers
                       ISBN = p.ISBN,
                       ImagePath = p.ImagePath,
                       Created = p.Created,
-                      //GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
-                      //AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-                  });
+                      IsDeleted = p.IsDeleted,
+                      GenreNameSelect = new SelectList(p.GenresFromBooks.Select(m => m.Genre), "GenreID", "Name"),
+                      AuthorNameSelect = new SelectList(p.AuthorsFromBooks.Select(m => m.Author), "AuthorID", "FullName"), //Gör en SelectList av GenreName i ViewModel om det ska fungera.
+                      UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
+                      GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
+                      AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
+                     
+                  }).FirstOrDefault();
 
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "FullName");
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenreID", "Name");
+           
+            ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
+            ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
 
-            coolbooksContext.ToList();
-            
+
+
+
             return View(coolbooksContext);
         }
+
+      
 
         // POST: Books/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BooksID,UserID,AuthorID,Title,Description,ISBN,ImagePath,IsDeleted,Created,GenerID")] Books books)
+        public async Task<IActionResult> Edit(BooksViewModel booksView)
         {
-            if (id != books.BooksID)
+
+            var book = new Books()
             {
-                return NotFound();
+                BooksID = booksView.BooksID,
+                Title = booksView.Title,
+                Description = booksView.Description,
+                ISBN = booksView.ISBN,
+                ImagePath = booksView.ImagePath
+            };
+
+            var booksAuthors = new List<BooksAuthors>();
+
+            var baList = await _context.BooksAuthors.Where(td => td.BooksID == booksView.BooksID).ToListAsync();
+            _context.RemoveRange(baList);
+
+           
+            foreach (var AutorId in booksView.AutorsId)
+            {
+
+                var bookArthor = new BooksAuthors()
+                {
+                    AuthorID = AutorId,
+                    BooksID = booksView.BooksID
+                };
+
+                booksAuthors.Add(bookArthor);
             }
 
-            if (ModelState.IsValid)
+            var booksGenres = new List<BooksGenres>();
+
+            var bgList = await _context.BooksGenres.Where(td => td.BooksID == booksView.BooksID).ToListAsync();
+            _context.RemoveRange(bgList);
+
+            foreach (var GenreId in booksView.GenresId)
             {
-                try
+
+                var bookGenre = new BooksGenres()
                 {
-                    _context.Update(books);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BooksExists(books.BooksID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    GenreID = GenreId,
+                    BooksID = booksView.BooksID
+                };
+                booksGenres.Add(bookGenre);
+
             }
-            ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.AuthorsFromBooks);
-            ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.GenresFromBooks);
-            return View(books);
+
+            _context.AddRange(booksGenres);
+            _context.AddRange(booksAuthors);
+            _context.Books.Update(book);
+
+            await _context.SaveChangesAsync();
+            
+            
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Books/Delete/5
@@ -251,15 +288,30 @@ namespace CoolBooks.Controllers
         }
 
         // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(BooksViewModel booksView)
         {
-            var books = await _context.Books.FindAsync(id);
-            _context.Books.Remove(books);
+            var book = _context.Books.FirstOrDefault(u => u.BooksID == booksView.BooksID);
+            book.IsDeleted = true;
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+       
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Revoke(BooksViewModel booksView)
+        {
+            var book = _context.Books.FirstOrDefault(u => u.BooksID == booksView.BooksID);
+            book.IsDeleted = false;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         private bool BooksExists(int id)
         {
