@@ -2,6 +2,7 @@
 @using CoolBooks.Areas.Identity;
 @model IEnumerable<CoolBooks.Models.BooksViewModel>
 @inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 @*@{
     Layout = null;
@@ -25,9 +26,14 @@
     </p>
 </form>
 
-<p>
-    <a class="btn btn-secondary" asp-action="Create">Create New</a>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+    <a class="btn btn-secondary" asp-action="Create">Create New Book</a>
 </p>
+}
+
 
 <table class="table table-dark table-striped table-borderless table-hover align-top">
     <thead>
@@ -57,7 +63,11 @@
     <tbody>
 @foreach (var item in Model) 
 {
-    @if ((item.IsDeleted == false && User.IsInRole("User")) || (item.IsDeleted && User.IsInRole("Admin")))
+
+   
+
+
+    @if ((item.IsDeleted == false && User.IsInRole("User")) || (item.IsDeleted && User.IsInRole("Admin")) || (!SignInManager.IsSignedIn(User)))
     {
         
     
@@ -114,6 +124,7 @@
         </tr>
 }
 }
+
     </tbody>
 </table>
 

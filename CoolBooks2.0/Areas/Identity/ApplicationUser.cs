@@ -11,6 +11,13 @@ namespace CoolBooks.Areas.Identity
         [Column(TypeName = "datetime")]
         public DateTime? Created { get; set; }
 
-
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }
