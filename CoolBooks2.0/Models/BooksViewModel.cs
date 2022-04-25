@@ -17,10 +17,10 @@ namespace CoolBooks.Models
         public bool IsDeleted { get; set; }
 
         public bool? IsBookOfTheWeek { get; set; }
-        //public bool? NewestBook { get; set; } //ny ej (add-migration) än
-        //public bool MostLikedBook { get; set; } //ny ej (add-migration) än
-        //public bool MostCommetedBook {get; set; } //ny ej (add-migration) än
-        //public bool MostDislikedBook {get; set; } // ny ej (add-migration) än
+        public bool? NewestBook { get; set; } //ny ej (add-migration) än
+        public bool MostLikedBook { get; set; } //ny ej (add-migration) än
+        public bool MostCommetedBook { get; set; } //ny ej (add-migration) än
+        public bool MostDislikedBook { get; set; } // ny ej (add-migration) än
 
         public int BooksID { get; set; }
         //public string AuthorName { get; set; }
