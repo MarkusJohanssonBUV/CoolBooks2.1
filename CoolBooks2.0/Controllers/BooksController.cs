@@ -10,9 +10,11 @@ using CoolBooks.Data;
 using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity;
 using CoolBooks.Areas.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoolBooks.Controllers
 {
+    
     public class BooksController : Controller
     {
         private readonly CoolbooksContext _context;
@@ -81,6 +83,7 @@ namespace CoolBooks.Controllers
                     Created = p.Created,
                     GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
+                    Reviews = p.Reviews.ToList()
                 }).AsEnumerable();
 
             //coolbooksContext.ToList();
@@ -97,6 +100,7 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Books/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
@@ -171,7 +175,7 @@ namespace CoolBooks.Controllers
             return NotFound();
         }
 
-            
+
 
             var coolbooksContext = _context.Books
                   .Where(p => p.BooksID == id)
@@ -186,17 +190,16 @@ namespace CoolBooks.Controllers
                       IsDeleted = p.IsDeleted,
                       GenreNameSelect = new SelectList(p.GenresFromBooks.Select(m => m.Genre), "GenreID", "Name"),
                       AuthorNameSelect = new SelectList(p.AuthorsFromBooks.Select(m => m.Author), "AuthorID", "FullName"), //Gör en SelectList av GenreName i ViewModel om det ska fungera.
-                      UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
+                      UserName = (List<string>)p.BooksUsers.Select(m => m.Client.FullName),
                       GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                       AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-                     
+                      GenresId = (List<int>)p.GenresFromBooks.Select(m => m.Genre.GenreID),
+                      AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
+                      
                   }).FirstOrDefault();
 
-           
-            ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
-            ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
-
-
+            ViewData["AllGenres"] = _context.Genres.ToList(); //Försöker få att det förvalda värdet ska vara värdet som tillhör boken
+            ViewData["AllAuthors"] = _context.Authors.ToList(); //genre.ToList(); 
 
 
             return View(coolbooksContext);

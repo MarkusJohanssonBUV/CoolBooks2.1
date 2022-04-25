@@ -18,7 +18,7 @@ namespace CoolBooks.Models
         //public string AuthorName { get; set; }
         //public string GenreName { get; set; }
 
-        public List<Books>? Books { get; set; }
+        public List<Reviews>? Reviews { get; set; }
 
         public List<string> AuthorName { get; set; }
         public List<string> GenreName { get; set; }
