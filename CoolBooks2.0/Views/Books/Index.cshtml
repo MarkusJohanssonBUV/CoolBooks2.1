@@ -26,12 +26,14 @@
     </p>
 </form>
 
+
 @if (SignInManager.IsSignedIn(User))
 {
     <p>
     <a class="btn btn-secondary" asp-action="Create">Create New Book</a>
 </p>
 }
+
 
 <table class="table table-dark table-striped table-borderless table-hover align-top">
     <thead>
@@ -125,5 +127,6 @@
 
     </tbody>
 </table>
+
 </body>
 </html>

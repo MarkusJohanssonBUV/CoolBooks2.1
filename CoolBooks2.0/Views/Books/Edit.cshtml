@@ -22,6 +22,7 @@
     <div class="col-md-4">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
         
                   <input type="hidden" asp-for="BooksID" />
              
@@ -53,6 +54,7 @@
                         @Html.DropDownListFor(g=>g.GenresId[0], new SelectList(ViewBag.AllGenres,"GenreID", "Name", Model.GenresId.FirstOrDefault()), new { @class = "form-control" })
                  </div>
                 
+
             
                     <div class="form-group">
                         @Html.Label("Authors")
