@@ -29,6 +29,10 @@ namespace CoolBooks.Controllers
                     ImagePath = p.ImagePath,
                     Created = p.Created,
                     IsBookOfTheWeek =p.IsBookOfTheWeek,
+                    MostCommetedBook =p.MostCommetedBook,
+                    MostLikedBook =p.MostLikedBook,
+                    MostDislikedBook =p.MostDislikedBook,
+                    NewestBook =p.NewestBook,
 
                     GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
