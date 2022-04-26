@@ -4,6 +4,7 @@ using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CoolBooks.Controllers
 {
@@ -11,6 +12,7 @@ namespace CoolBooks.Controllers
     {
         private readonly CoolbooksContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        
         public HomeController(CoolbooksContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -19,6 +21,29 @@ namespace CoolBooks.Controllers
 
         public IActionResult Index()
         {
+            var books = _context.Books.ToList();
+            var excludedBooks = books.Where(x => x.IsBookOfTheWeek || x.IsDeleted || x.MostCommetedBook || x.MostDislikedBook || x.MostLikedBook).Select(y => y.BooksID).ToList();
+            Random rnd = new Random();
+
+            List<int> RandomBooklist = new List<int>();
+            while (RandomBooklist.Count() < 6)
+            {
+                var randomNumber = rnd.Next(1, books.Count());
+
+                if (!excludedBooks.Contains(randomNumber))
+                {
+                    if (!RandomBooklist.Contains(randomNumber))
+                        {
+                            RandomBooklist.Add(randomNumber);
+                        }
+                    
+                }
+
+                
+
+            }
+            ViewData["Random"] = RandomBooklist;
+
             var coolbooksContext = _context.Books
                 .Select(p => new BooksViewModel
                 {
@@ -33,12 +58,15 @@ namespace CoolBooks.Controllers
                     MostLikedBook =p.MostLikedBook,
                     MostDislikedBook =p.MostDislikedBook,
                     NewestBook =p.NewestBook,
-
+                    
                     GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
+                    
                 })
                 .ToList();
+           
+
             return View(coolbooksContext);
         }
 

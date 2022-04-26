@@ -29,6 +29,7 @@
             </tr>
         </table>
         </div>
+
         <div class ="BookOfTheWeekInfo">
             <table>
                   
@@ -71,6 +72,7 @@
             </table> 
             <a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a>
             </div>
+
 }
 }
 </div>
@@ -132,8 +134,28 @@
 </div>
 </div>
 <div class = "TopBooks">
-   <p> newest 3 book/random</p>
-</div>
+  
+
+        
+        @foreach(var item in Model)
+            {
+             @if (ViewBag.Random.Contains(item.BooksID))
+               {
+                       @*<a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a>
+                        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:10%">*@
+                        <table style="width:100%">
+  <tr>
+    <td><img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:100%"></td>
+  </tr>
+  <tr>
+    <th><a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a></th>
+  </tr>
+
+ 
+</table>
+                }
+              }            
+    </div>
 
 </div>
 
@@ -155,6 +177,7 @@
   'TopBooks';
   padding: 10px;
 }
+
 .BookOfTheWeek {
     display: flex;
     flex-wrap: nowrap;
@@ -170,9 +193,22 @@
 
 * {box-sizing:border-box}
 
+.TopBooks {
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: left;
+    /*background-color: #BBB8B2;*/
+    background-color: #e6e6e6;
+}
+
+.TopBooks > div {
+    padding: 2%;
+    text-align: left;
+}
+
+
+
 /* Slideshow container */
-
-
 .slideshow-container {
   max-width: 1000px;
   position: relative;
