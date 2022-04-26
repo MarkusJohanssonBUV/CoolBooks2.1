@@ -77,19 +77,19 @@
                 <img style="width:300px"  alt=""  src="@Html.DisplayFor(modelItem => modelItem.ImagePath)">
 
                 @if (Model.IsDeleted==false)
-        {
+                {
             <form asp-action="DeleteConfirmed" >
             <input type="hidden" asp-for="BooksID" />
             <input type="submit" value="Delete Book" class="btn btn-danger" style="margin-top: 10px"/> 
                 </form>
-            }
+                }
             else
-            {
+                {
                 <form asp-action="Revoke" >
                 <input type="hidden" asp-for="BooksID" />
                 <input type="submit" value="Revoke Book" class="btn btn-primary" style="margin-top: 10px"/> 
                 </form>
-            }
+                }
                 </div>
 
     <div>
