@@ -10,9 +10,9 @@ namespace CoolBooks.Models
     public partial class Reviews
     {
         public int ReviewsID { get; set; }
-        public string Title { get; set; }
-        public string Text { get; set; }
-        public string Rating { get; set; }
+        public string? Title { get; set; }
+        public string? Text { get; set; }
+        public string? Rating { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? Created { get; set; }
         public int BookID { get; set; }

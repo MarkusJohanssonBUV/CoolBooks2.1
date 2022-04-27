@@ -1,4 +1,10 @@
-﻿@model CoolBooks.Models.Reviews
+﻿@using Microsoft.AspNetCore.Identity
+@using CoolBooks.Areas.Identity;
+@model CoolBooks.Models.Reviews
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+
 
 
 
@@ -22,8 +28,8 @@
                 <select asp-for="BookID" class ="form-control" asp-items="ViewBag.BookID"></select>
             </div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <input asp-for="ClientId" class="form-control" />
+                <label asp-for="@UserManager.GetUserAsync(User).Result.FullName"  class="control-label"></label>
+                <input asp-for="@UserManager.GetUserAsync(User).Result.FullName" class="form-control" />
                 <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
             
