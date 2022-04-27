@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CoolbooksContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CoolbooksContext")));
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<CoolbooksContext>().AddDefaultTokenProviders(); ;
 
 builder.Services.AddDefaultIdentity<ApplicationUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CoolbooksContext>();
 builder.Services.AddRazorPages();

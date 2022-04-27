@@ -3,7 +3,7 @@
 namespace CoolBooks.Models
 {
     [NotMapped]
-    public class Roles
+    public class RolesAdmin
     {
         
         

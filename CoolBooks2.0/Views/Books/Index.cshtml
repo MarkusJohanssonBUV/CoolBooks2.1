@@ -18,15 +18,6 @@
 <body>
 
 
-    <form asp-controller="Books" asp-action="Index" method="get">
-    <p>
-
-        Search: <input type="text"  name="Search"/>
-        <input type="submit" value="Filter" />
-    </p>
-</form>
-
-
 @if (SignInManager.IsSignedIn(User))
 {
     <p>
@@ -67,7 +58,7 @@
    
 
 
-    @if ((item.IsDeleted == false && User.IsInRole("User")) || (item.IsDeleted && User.IsInRole("Admin")) || (!SignInManager.IsSignedIn(User)))
+    @if ((item.IsDeleted == false && User.IsInRole("User")) || (User.IsInRole("Admin")) || (item.IsDeleted == false && !SignInManager.IsSignedIn(User)))
     {
         
     

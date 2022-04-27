@@ -61,6 +61,16 @@
                         </li>
                           }
                     </ul>
+                    <div >
+                         <form asp-controller="Books" asp-action="Index" method="get">
+                        <p>
+                            <input type="text"  name="Search" style="margin-top: 12px" />
+                            <input type="submit" value="Search" class="btn btn-secondary"/>
+                        </p>
+                    </form>
+
+                    </div>
+                   
                 </div>
                 <partial name="_LoginPartial"/>
             </div>

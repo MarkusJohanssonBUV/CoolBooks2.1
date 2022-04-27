@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using CoolBooks.Areas.Identity;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace CoolBooks.Controllers
 {
     
@@ -19,10 +20,14 @@ namespace CoolBooks.Controllers
     {
         private readonly CoolbooksContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public BooksController(CoolbooksContext context, UserManager<ApplicationUser> userManager)
+        private readonly RoleManager<IdentityRole> roleManager;
+        
+
+        public BooksController(CoolbooksContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         // GET: Books
@@ -102,7 +107,7 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Books/Create
-        [Authorize]
+        [Authorize(Roles = ("Admin, User"))]
         public IActionResult Create()
         {
             ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
@@ -110,11 +115,10 @@ namespace CoolBooks.Controllers
             return View();
         }
 
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+      
         public async Task<IActionResult> Create(BooksViewModel booksView)
         {
             var book = new Books();
@@ -169,17 +173,31 @@ namespace CoolBooks.Controllers
             //return View(book);
         }
 
-        // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        private List<int> GetBookIDFromUser()
         {
-           if (id == null)
-        {
-            return NotFound();
+            var bookId = _context.BooksUsers.Where(c => c.ClientId == _userManager.GetUserId(HttpContext.User)).Select(u => u.BooksID).ToList();
+
+            return bookId;
         }
 
+       
+        [Authorize]
+      
+        // GET: Books/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+               if (id == null)
+                {
+                    return NotFound();
+                }
 
-
-            var coolbooksContext = _context.Books
+          
+                if (!GetBookIDFromUser().Contains(id) && User.IsInRole("User"))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+               
+                    var coolbooksContextUser = _context.Books
                   .Where(p => p.BooksID == id)
                   .Select(p => new BooksViewModel
                   {
@@ -197,14 +215,15 @@ namespace CoolBooks.Controllers
                       AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                       GenresId = (List<int>)p.GenresFromBooks.Select(m => m.Genre.GenreID),
                       AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
-                      
+
                   }).FirstOrDefault();
 
-            ViewData["AllGenres"] = _context.Genres.ToList(); //Försöker få att det förvalda värdet ska vara värdet som tillhör boken
-            ViewData["AllAuthors"] = _context.Authors.ToList(); //genre.ToList(); 
+                    ViewData["AllGenres"] = _context.Genres.ToList(); //Försöker få att det förvalda värdet ska vara värdet som tillhör boken
+                    ViewData["AllAuthors"] = _context.Authors.ToList(); //genre.ToList(); 
 
 
-            return View(coolbooksContext);
+                    return View(coolbooksContextUser);
+                            
         }
 
       

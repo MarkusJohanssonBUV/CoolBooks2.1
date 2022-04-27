@@ -25,7 +25,7 @@ namespace CoolBooks.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRoles(Roles roles)
+        public async Task<IActionResult> CreateRoles(RolesAdmin roles)
         {
             var roleExist = await roleManager.RoleExistsAsync(roles.RoleName);
             if (!roleExist)
