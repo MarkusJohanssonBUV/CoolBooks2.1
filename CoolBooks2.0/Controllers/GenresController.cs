@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoolBooks.Data;
 using CoolBooks.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoolBooks.Controllers
 {
@@ -45,6 +46,7 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Genres/Create
+        [Authorize(Roles = ("Admin"))]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +70,7 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Genres/Edit/5
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
