@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<CoolBooks.Models.BooksViewModel>
 
-
-
 <!DOCTYPE html>
 
 <html>
@@ -12,60 +10,31 @@
 <body>
     @foreach (var item in Model)
         {
-<div>
-    <h4>Books</h4>
-    <hr />
-    <dl class="row">
-        
-            <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model=> item.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model=> item.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.ISBN)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.ISBN)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.ImagePath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.ImagePath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.AuthorName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.AuthorName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => item.GenreName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => item.GenreName)
-        </dd>
-    </dl>
+<h2>@Html.DisplayFor(Model => item.Title)</h2>
+<div class="d-flex flex-row">
+    <img style="width:240px;"  alt=""  src="@Html.DisplayFor(modelItem => item.ImagePath)">
+    <div class="d-flex justify-content-center">
+        <p>@Html.DisplayFor(Model => item.Description)</p>
+    </div>
+    
 </div>
+        
+<div>
+    <h2>Reviews: </h2>
+    <hr />
+        @foreach (var reviews in item.Reviews)
+        {
+            <h3>@Html.DisplayFor(Model => reviews.Title)</h3>
+            <p>@Html.DisplayFor(Model => reviews.Text)</p>
+            <h5>Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
+        }
+</div>
+}
 <div>
     <a asp-action="Edit" asp-route-id="item.BooksID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back</a>
 </div>
-        }
+        
         
 </body>
 </html>

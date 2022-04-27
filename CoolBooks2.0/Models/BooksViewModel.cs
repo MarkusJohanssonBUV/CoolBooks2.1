@@ -26,12 +26,15 @@ namespace CoolBooks.Models
         //public string AuthorName { get; set; }
         //public string GenreName { get; set; }
 
-        public List<Reviews>? Reviews { get; set; }
-
         public List<string> AuthorName { get; set; }
         public List<string> GenreName { get; set; }
         public List<string> AllGenreName { get; set; }
+
+        public List<Reviews> Reviews { get; set; }
+        public List<string> ReviewText { get; set; }
+
         public List<int> RandomBooklist { get; set; }
+
 
         public SelectList AuthorNameSelect { get; set; }
         public SelectList GenreNameSelect { get; set; }
