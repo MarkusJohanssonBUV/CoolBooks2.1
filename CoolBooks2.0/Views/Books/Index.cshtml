@@ -34,7 +34,6 @@
 </p>
 }
 
-
 <table class="table table-dark table-striped table-borderless table-hover align-top">
     <thead>
         <tr>
@@ -100,7 +99,7 @@
                  @for (var i = 0; i < item.GenreName.Count; i++)
                 {
 
-                         @Html.ActionLink(item.GenreName[i], "Details", "Genres", new {id=item.GenresId[i]}, new Dictionary<string, object> { { "class", "btn btn-secondary" } } )<br />
+                         @Html.ActionLink(item.GenreName[i], "Details", "Genres", new {id=item.GenresId[i]}, new Dictionary<string, object> {  { "class", "btn btn-secondary" } } )<br />
 
                 }
            
