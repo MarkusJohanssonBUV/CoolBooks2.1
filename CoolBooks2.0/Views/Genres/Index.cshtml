@@ -10,9 +10,13 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    @if (User.IsInRole("Admin"))
+    {
+         <p>
+            <a class="btn btn-secondary" asp-action="Create">Create New</a>
+        </p>
+    }
+
 <table class="table">
     <thead>
         <tr>
@@ -41,9 +45,11 @@
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.GenreID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GenreID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GenreID">Delete</a>
+                 @if (User.IsInRole("Admin")) 
+                        {
+                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.GenreID" style="margin-bottom: 10px">Edit</a> 
+                        }
+                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.GenreID">Details</a> 
             </td>
         </tr>
 }

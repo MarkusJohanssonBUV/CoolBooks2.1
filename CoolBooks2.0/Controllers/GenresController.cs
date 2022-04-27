@@ -55,8 +55,9 @@ namespace CoolBooks.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GenerID,Name,Description,Created")] Genres genres)
+        public async Task<IActionResult> Create([Bind("GenerID,Name,Description")] Genres genres)
         {
+            genres.Created = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(genres);
