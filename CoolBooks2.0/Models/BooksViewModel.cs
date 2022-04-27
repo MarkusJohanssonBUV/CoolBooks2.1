@@ -30,9 +30,11 @@ namespace CoolBooks.Models
         public List<string> GenreName { get; set; }
         public List<string> AllGenreName { get; set; }
 
-        public List<Reviews> Reviews { get; set; }
+        public List<Reviews>? Reviews { get; set; }
         public List<string> ReviewText { get; set; }
-
+        public List<string> ReviewTitle { get; set; }
+        public List<string> ReviewRating { get; set; }
+        public List<string> ReviewBookId { get; set; }
         public List<int> RandomBooklist { get; set; }
 
 
