@@ -42,6 +42,9 @@
                              <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Quotes" asp-action="Index">Quotes</a>
+                            </li>
                      
 
                         @if (User.IsInRole("Admin"))
@@ -59,12 +62,17 @@
                                <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateRoles" style="color: red !important" >CreateRoles</a>
                         </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ManageQuotes" style="color: red !important" >ManageQuotes</a>
+                        </li>
+
                           }
                     </ul>
                     <div >
                          <form asp-controller="Books" asp-action="Index" method="get">
                         <p>
-                            <input type="text"  name="Search" style="margin-top: 12px" />
+                            @Html.TextBox("Search", ViewBag.CurrentFilter as string)
+                            @*<input type="text"  name="Search" style="margin-top: 12px" />*@
                             <input type="submit" value="Search" class="btn btn-secondary"/>
                         </p>
                     </form>

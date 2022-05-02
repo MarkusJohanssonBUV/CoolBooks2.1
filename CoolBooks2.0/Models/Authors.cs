@@ -14,10 +14,14 @@ namespace CoolBooks.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? Created { get; set; }
+       
+
 
         public ICollection<BooksAuthors> BooksFromAutors { get; set; }
+        public ICollection<Quotes> Quotes { get; set; }
+    
 
-        [NotMapped]
+    [NotMapped]
         public string FullName
         {
             get

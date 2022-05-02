@@ -1,13 +1,17 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity;
 @using CoolBooks.Areas.Identity;
 @model IEnumerable<CoolBooks.Models.BooksViewModel>
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 
-@*@{
-    Layout = null;
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Books";
 }
-*@
+
 <!DOCTYPE html>
 
 <html>
@@ -30,20 +34,28 @@
         <tr>
            
             <th>
+                 @*<a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>*@
+                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter=ViewBag.CurrentFilter })<br />
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             
             <th>
+                Image
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             
             <th>
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">@Html.DisplayNameFor(model => model.AuthorName)</a>*@
+                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.AuthorSortParm, currentFilter=ViewBag.CurrentFilter })<br />
                 @Html.DisplayNameFor(model => model.AuthorName)
             </th>
             <th>
+               @* <a asp-action="Index" asp-route-sortOrder="@ViewData["GenreSortParm"]">@Html.DisplayNameFor(model => model.GenreName)</a>*@
+                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.GenreSortParm, currentFilter=ViewBag.CurrentFilter })<br />
                 @Html.DisplayNameFor(model => model.GenreName)
             </th>
             
@@ -108,15 +120,20 @@
                         }
                 
                 
-                 <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.BooksID">View</a> 
+                 <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.BooksID" >View</a> 
                 @*<a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>*@
             </td>
         </tr>
-}
+    }
+
 }
 
     </tbody>
+
 </table>
+
+<br />
 
 </body>
 </html>
+

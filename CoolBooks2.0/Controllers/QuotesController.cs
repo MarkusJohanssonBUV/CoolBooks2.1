@@ -8,41 +8,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoolBooks.Data;
 using CoolBooks.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CoolBooks.Controllers
 {
-    public class AuthorsController : Controller
+    public class QuotesController : Controller
     {
         private readonly CoolbooksContext _context;
 
-        public AuthorsController(CoolbooksContext context)
+        public QuotesController(CoolbooksContext context)
         {
             _context = context;
         }
 
-        private List<BooksViewModel> GetAllAuthors() 
+        // GET: Quotes
+        public IActionResult Index()
         {
-            var coolbooksContext = _context.Authors
-                .Select(p => new BooksViewModel
-                {
-                    AutorsId = (List<int>)p.BooksFromAutors.Select(m => m.Author.AuthorID),
-                    AuthorName = (List<string>)p.BooksFromAutors.Select(m => m.Author.FullName),
-                   
-                    Quotes = p.Quotes.ToList() 
-                })
-                .ToList();
-
-            return coolbooksContext;
+            return View( _context.Quotes.ToList());
         }
 
-        // GET: Authors
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Authors.ToListAsync());
-        }
-
-        // GET: Authors/Details/5
+        // GET: Quotes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,38 +34,49 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
-            var author = GetAllAuthors().Where(a => a.AutorsId[0] == id).FirstOrDefault();
-            
+            var quotes = await _context.Quotes
+                .FirstOrDefaultAsync(m => m.QuoteId == id);
+            if (quotes == null)
+            {
+                return NotFound();
+            }
 
-            return View(author);
+            return View(quotes);
         }
 
-        // GET: Authors/Create
-        [Authorize(Roles = ("Admin"))]
+        // GET: Quotes/Create
         public IActionResult Create()
         {
+            
+            ViewData["AllBooks"] = _context.Books.ToList();
+            ViewData["AllAuthors"] = _context.Authors.ToList();
+
+            //ViewData["AllBooks"] = new SelectList(_context.Books, "BooksD", "Title"); //genre.ToList(); 
+            //ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
             return View();
         }
 
-        // POST: Authors/Create
+        // POST: Quotes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AuthorID,FirstName,LastName")] Authors authors)
+        public async Task<IActionResult> Create(BooksViewModel quotes)
         {
-            authors.Created = DateTime.Now;
-            if (ModelState.IsValid)
+            var quote = new Quotes()
             {
-                _context.Add(authors);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(authors);
+                Quote = quotes.Quote.FirstOrDefault(),
+                BookID = quotes.BooksID,
+                AuthorID = quotes.AutorsId.FirstOrDefault(),
+                
+            };
+            await _context.Quotes.AddAsync(quote);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Authors/Edit/5
-        [Authorize(Roles = ("Admin"))]
+        // GET: Quotes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,22 +84,22 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
-            var authors = await _context.Authors.FindAsync(id);
-            if (authors == null)
+            var quotes = await _context.Quotes.FindAsync(id);
+            if (quotes == null)
             {
                 return NotFound();
             }
-            return View(authors);
+            return View(quotes);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Quotes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AuthorID,FirstName,LastName,Created")] Authors authors)
+        public async Task<IActionResult> Edit(int id, [Bind("QuoteId,Quote,IsQuoteModerated,BookID,AuthorID")] Quotes quotes)
         {
-            if (id != authors.AuthorID)
+            if (id != quotes.QuoteId)
             {
                 return NotFound();
             }
@@ -113,12 +108,12 @@ namespace CoolBooks.Controllers
             {
                 try
                 {
-                    _context.Update(authors);
+                    _context.Update(quotes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorsExists(authors.AuthorID))
+                    if (!QuotesExists(quotes.QuoteId))
                     {
                         return NotFound();
                     }
@@ -129,10 +124,10 @@ namespace CoolBooks.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(authors);
+            return View(quotes);
         }
 
-        // GET: Authors/Delete/5
+        // GET: Quotes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,30 +135,30 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
-            var authors = await _context.Authors
-                .FirstOrDefaultAsync(m => m.AuthorID == id);
-            if (authors == null)
+            var quotes = await _context.Quotes
+                .FirstOrDefaultAsync(m => m.QuoteId == id);
+            if (quotes == null)
             {
                 return NotFound();
             }
 
-            return View(authors);
+            return View(quotes);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Quotes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var authors = await _context.Authors.FindAsync(id);
-            _context.Authors.Remove(authors);
+            var quotes = await _context.Quotes.FindAsync(id);
+            _context.Quotes.Remove(quotes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorsExists(int id)
+        private bool QuotesExists(int id)
         {
-            return _context.Authors.Any(e => e.AuthorID == id);
+            return _context.Quotes.Any(e => e.QuoteId == id);
         }
     }
 }

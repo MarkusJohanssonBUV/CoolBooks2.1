@@ -20,7 +20,11 @@ namespace CoolBooks.Models
         public bool? NewestBook { get; set; } 
         public bool MostLikedBook { get; set; } 
         public bool MostCommetedBook { get; set; } 
-        public bool MostDislikedBook { get; set; } 
+        public bool MostDislikedBook { get; set; }
+        public int QuoteId { get; set; }
+        public List<string> Quote { get; set; }
+        public bool IsQuoteModerated { get; set; }
+        public List<Quotes> Quotes { get; set; }
 
         public int BooksID { get; set; }
         //public string AuthorName { get; set; }

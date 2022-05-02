@@ -1,4 +1,4 @@
-﻿@model CoolBooks.Models.Authors
+﻿@model CoolBooks.Models.BooksViewModel
 
 
 
@@ -16,27 +16,33 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.AuthorName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.AuthorName[0])
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
-        </dd>
+        </dd>*@
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.DisplayNameFor(model => model.Quote)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
+        @foreach (var item in Model.Quotes)
+        {
+                if (item.IsQuoteModerated)
+                {
+                    @Html.DisplayFor(model => item.Quote)<br>
+                }
+        }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.AuthorID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.AutorsId.FirstOrDefault()">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
 </body>

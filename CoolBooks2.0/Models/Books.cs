@@ -17,6 +17,7 @@ namespace CoolBooks.Models
         //}
 
         public int BooksID { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string ISBN { get; set; }
@@ -34,5 +35,6 @@ namespace CoolBooks.Models
         public ICollection<BooksGenres> GenresFromBooks { get; set; }
         public ICollection<BooksUsers> BooksUsers { get; set; }
         public ICollection<Reviews> Reviews { get; set; }
+        public ICollection<Quotes> Quotes{ get; set; }
     }
 }
