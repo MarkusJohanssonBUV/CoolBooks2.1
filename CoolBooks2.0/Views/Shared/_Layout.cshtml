@@ -42,9 +42,13 @@
                              <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Quotes" asp-action="Index">Quotes</a>
                             </li>
+
+                            
+
                      
 
                         @if (User.IsInRole("Admin"))
@@ -59,12 +63,19 @@
                              @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="Create" style="color: red !important" >Add a new Review</a>
                             </li>*@
-                               <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateRoles" style="color: red !important" >CreateRoles</a>
-                        </li>
+                              
+
+                          
                           <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ManageQuotes" style="color: red !important" >ManageQuotes</a>
                         </li>
+
+
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateRoles" style="color: red !important" >CreateRoles</a>
+                                </li>
+                                <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Graph" asp-action="Index" style="color: red !important">Graph</a>
+                                </li>
 
                           }
                     </ul>
