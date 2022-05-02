@@ -11,6 +11,7 @@ using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity;
 using CoolBooks.Areas.Identity;
 using Microsoft.AspNetCore.Authorization;
+using PagedList;
 
 
 namespace CoolBooks.Controllers
@@ -30,14 +31,11 @@ namespace CoolBooks.Controllers
             this.roleManager = roleManager;
         }
 
-        // GET: Books
 
-        public async Task<IActionResult> Index(string Search)
+        private List<BooksViewModel> GetAllBooks()
         {
-            //Search = Search.ToLower();
-
             var coolbooksContext = _context.Books
-                .Select( p => new BooksViewModel
+                .Select(p => new BooksViewModel
                 {
                     BooksID = p.BooksID,
                     Title = p.Title,
@@ -51,21 +49,64 @@ namespace CoolBooks.Controllers
                     AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
+                    Reviews = p.Reviews.ToList()
                 })
                 .ToList();
 
+            return coolbooksContext;
+        }
+        public async Task<IActionResult> Index(string Search, string sortOrder, string currentFilter, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
+            ViewBag.AuthorSortParm = sortOrder == "Author" ? "Author_desc" : "Author";
+            ViewBag.GenreSortParm = sortOrder == "Genre" ? "Genre_desc" : "Genre";
+
+            if (Search == null)
+            {
+                Search = currentFilter;
+            }
+            
+
+            ViewBag.CurrentFilter = Search;
+
+            var coolbooksContext = GetAllBooks();
+
             if (!string.IsNullOrEmpty(Search))
             {
-                coolbooksContext = coolbooksContext.Where(p => p.Title.ToLower().Contains(Search.ToLower()) ||
-                 p.GenreName.Where(x=> x.ToLower().Contains(Search.ToLower())).Any()  ||
+                coolbooksContext = GetAllBooks().Where(p => p.Title.ToLower().Contains(Search.ToLower()) ||
+                 p.GenreName.Where(x => x.ToLower().Contains(Search.ToLower())).Any() ||
                  p.AuthorName.Where(x => x.ToLower().Contains(Search.ToLower())).Any() ||
                  p.UserName.Where(x => x.ToLower().Contains(Search.ToLower())).Any()
                  ).ToList();
             }
 
-         
+            switch (sortOrder)
+            {
+                case "Title_desc":
+                    coolbooksContext = coolbooksContext.OrderByDescending(s => s.Title).ToList();
+                    break;
+                case "Author":
+                    coolbooksContext = coolbooksContext.OrderBy(s => s.AuthorName[0]).ToList(); 
+                    break;
+                case "Author_desc":
+                    coolbooksContext = coolbooksContext.OrderByDescending(s => s.AuthorName[0]).ToList(); 
+                    break;
+                case "Genre":
+                    coolbooksContext = coolbooksContext.OrderBy(s => s.GenreName[0]).ToList(); 
+                    break;
+                case "Genre_desc":
+                    coolbooksContext = coolbooksContext.OrderByDescending(s => s.GenreName[0]).ToList();
+                    break;
+                default:
+                    coolbooksContext = coolbooksContext.OrderByDescending(s => s.UserName[0] == _userManager.GetUserName(HttpContext.User)).ToList(); 
+                    break;
+            }
 
-            return View(coolbooksContext);
+
+            
+            return View(coolbooksContext); 
+           
 
         }
 
@@ -77,32 +118,9 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
-
-            var   coolbooksContext = _context.Books
-                .Where(p => p.BooksID == id)
-                .Select(p => new BooksViewModel
-                {
-                    BooksID = p.BooksID,
-                    Title = p.Title,
-                    Description = p.Description,
-                    ISBN = p.ISBN,
-                    ImagePath = p.ImagePath,
-                    Created = p.Created,
-                    GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
-                    AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-                    Reviews = p.Reviews.ToList()
-                }).AsEnumerable();
-
-            //coolbooksContext.ToList();
+            var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).AsEnumerable();
 
             return View(coolbooksContext);
-
-
-            //if (books == null)
-            //{
-            //    return NotFound();
-            //}
-
 
         }
 
@@ -160,17 +178,10 @@ namespace CoolBooks.Controllers
                 
             }
             await _context.SaveChangesAsync();
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(book);
-            //    await _context.SaveChangesAsync();
-
-            //}
-            //ViewData["AuthorID"] = new SelectList(_context.Authors, "AuthorID", "AuthorID", books.BooksAuthors);
-            //ViewData["GenerID"] = new SelectList(_context.Genres, "GenerID", "GenerID", books.BooksGenres);
+            
 
             return RedirectToAction(nameof(Index));
-            //return View(book);
+            
         }
 
         private List<int> GetBookIDFromUser()
@@ -197,29 +208,11 @@ namespace CoolBooks.Controllers
                     return RedirectToAction(nameof(Index));
                 }
                
-                    var coolbooksContextUser = _context.Books
-                  .Where(p => p.BooksID == id)
-                  .Select(p => new BooksViewModel
-                  {
-                      BooksID = p.BooksID,
-                      Title = p.Title,
-                      Description = p.Description,
-                      ISBN = p.ISBN,
-                      ImagePath = p.ImagePath,
-                      Created = p.Created,
-                      IsDeleted = p.IsDeleted,
-                      GenreNameSelect = new SelectList(p.GenresFromBooks.Select(m => m.Genre), "GenreID", "Name"),
-                      AuthorNameSelect = new SelectList(p.AuthorsFromBooks.Select(m => m.Author), "AuthorID", "FullName"), //Gör en SelectList av GenreName i ViewModel om det ska fungera.
-                      UserName = (List<string>)p.BooksUsers.Select(m => m.Client.FullName),
-                      GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
-                      AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
-                      GenresId = (List<int>)p.GenresFromBooks.Select(m => m.Genre.GenreID),
-                      AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
+                  
+            var coolbooksContextUser = GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
 
-                  }).FirstOrDefault();
-
-                    ViewData["AllGenres"] = _context.Genres.ToList(); //Försöker få att det förvalda värdet ska vara värdet som tillhör boken
-                    ViewData["AllAuthors"] = _context.Authors.ToList(); //genre.ToList(); 
+                    ViewData["AllGenres"] = _context.Genres.ToList(); 
+                    ViewData["AllAuthors"] = _context.Authors.ToList(); 
 
 
                     return View(coolbooksContextUser);

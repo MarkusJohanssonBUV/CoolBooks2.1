@@ -1,0 +1,50 @@
+﻿@model CoolBooks.Models.QuoteViewModel
+
+
+
+    <table class="table table-dark table-striped table-borderless table-hover align-top">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Quotes[0].Quote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quotes[0].IsQuoteModerated)
+            </th>
+           
+        </tr>
+    </thead>
+        @using (Html.BeginForm("ManageQuotes", "Admin", FormMethod.Post))
+        {
+              <tbody>
+                 @for (int i = 0; i < Model.Quotes.Count; i++)
+                        {
+                        <tr class="table-info table-light">
+                            <td>
+                
+                                @Html.DisplayFor(modelItem=>modelItem.Quotes[i].Quote)
+             
+                            </td>
+                            <td>
+                                <div class="switch_box box_1" > 
+                                  @Html.CheckBoxFor(modelItem=>modelItem.Quotes[i].IsQuoteModerated, new{ @class="switch_1"})   
+                                 
+                                  @Html.HiddenFor(modelItem=>modelItem.Quotes[i].QuoteId)
+                                   @Html.HiddenFor(modelItem=>modelItem.Quotes[i].AuthorID)
+                                    @Html.HiddenFor(modelItem=>modelItem.Quotes[i].BookID)
+                                     @Html.HiddenFor(modelItem=>modelItem.Quotes[i].Quote)
+                                </div>
+                
+                            </td>
+            
+                        </tr>
+                        }
+            </tbody>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+
+
+    }
+      
+</table>

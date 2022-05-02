@@ -1,0 +1,58 @@
+﻿@model CoolBooks.Models.BooksViewModel
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+<h4>Quotes</h4>
+<hr />
+<div class="row">
+    @*Försöka att få fram alla böcker som är kopplade till en specifik författare*@
+  @*  <div class="form-group">
+                        @Html.Label("Authors")
+                        @Html.DropDownListFor(a => a.AutorsId[0], new SelectList(ViewBag.AllAuthors,"AuthorID", "FullName",  new { @class = "form-control", chooseAuthor = ViewBag.chooseAuthor }))
+        </div>*@
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                        @Html.Label("Authors")<br />
+                        @Html.DropDownListFor(a => a.AutorsId[0], new SelectList(ViewBag.AllAuthors,"AuthorID", "FullName",  new { @class = "form-control"}))
+            </div>
+            <div class="form-group">
+                        @Html.Label("Books")<br />
+                        @Html.DropDownListFor(a => a.BooksID, new SelectList(ViewBag.AllBooks, "BooksID", "Title",  new { @class = "form-control"}))
+            </div>
+
+                           
+                <div class="form-group">
+                <label asp-for="Quote" class="control-label"></label>
+                <textarea  asp-for="Quote" rows="5" class="form-control" text-wrap:normal" type="text"></textarea>
+                <span asp-validation-for="Quote"class="text-danger"></span>
+            </div>
+            
+             
+                       
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+</body>
+</html>

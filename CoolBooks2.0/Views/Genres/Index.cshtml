@@ -17,7 +17,7 @@
         </p>
     }
 
-<table class="table">
+<table class="table table-dark table-striped table-borderless table-hover align-top">
     <thead>
         <tr>
             <th>
@@ -34,7 +34,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="table-info table-light">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

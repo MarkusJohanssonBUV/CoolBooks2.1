@@ -27,6 +27,8 @@ namespace CoolBooks.Data
         public virtual DbSet<Genres> Genres { get; set; }
         public virtual DbSet<Reviews> Reviews { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
+        public virtual DbSet<Quotes> Quotes { get; set; }
+        public virtual DbSet<ReviewComents> ReviewComents { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -34,7 +36,9 @@ namespace CoolBooks.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+
                 optionsBuilder.UseSqlServer("Data Source=LAPTOP-K1146D8H\\SQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
             }
         }
         
