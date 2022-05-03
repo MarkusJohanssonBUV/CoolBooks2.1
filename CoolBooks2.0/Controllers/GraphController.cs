@@ -39,12 +39,17 @@ namespace CoolBooks.Controllers
 
             //ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
 
+            var test = _context.Reviews.ToList();
 
-            var coolbooksContext = _context.Authors
+
+           
+
+            var coolbooksContext = _context.Reviews
+                .GroupBy(g=>g.Created)
                 .Select(p => new DataPoint
                 {
-                    Label = p.FullName,
-                    Y = p.BooksFromAutors.Count(),
+                    Label = p.Key.ToString(),
+                    Y = p.Count(),
                    
                 })
                 .ToList();

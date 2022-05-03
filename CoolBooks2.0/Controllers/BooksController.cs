@@ -11,7 +11,7 @@ using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity;
 using CoolBooks.Areas.Identity;
 using Microsoft.AspNetCore.Authorization;
-using PagedList;
+
 
 
 namespace CoolBooks.Controllers
@@ -49,7 +49,8 @@ namespace CoolBooks.Controllers
                     AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
-                    Reviews = p.Reviews.ToList()
+                    Reviews = p.Reviews.ToList(),
+                    Quotes = p.Quotes.ToList()
                 })
                 .ToList();
 
@@ -118,7 +119,7 @@ namespace CoolBooks.Controllers
                 return NotFound();
             }
 
-            var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).AsEnumerable();
+            var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
 
             return View(coolbooksContext);
 

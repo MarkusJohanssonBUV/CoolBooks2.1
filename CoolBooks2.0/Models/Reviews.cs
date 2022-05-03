@@ -4,6 +4,7 @@ using CoolBooks.Areas.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoolBooks.Models
 {
@@ -14,6 +15,7 @@ namespace CoolBooks.Models
         public string? Text { get; set; }
         public string? Rating { get; set; }
         public bool? IsDeleted { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dddd, dd MMMM yyy}", ApplyFormatInEditMode = true)]
         public DateTime? Created { get; set; }
         public int BookID { get; set; }
         public Books Book { get; set; }

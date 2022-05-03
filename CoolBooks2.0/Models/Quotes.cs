@@ -10,7 +10,7 @@ namespace CoolBooks.Models
         public string Quote { get; set; }
         public bool IsQuoteModerated { get; set; }
 
-        public int BookID { get; set; }
+        public int? BookID { get; set; }
         [ForeignKey("BookID")]
         public Books Books { get; set; }
 

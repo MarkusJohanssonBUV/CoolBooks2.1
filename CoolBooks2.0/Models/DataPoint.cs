@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace CoolBooks.Models
 {
@@ -17,7 +18,8 @@ namespace CoolBooks.Models
 		public string Label { get; set; }
 
 		//Explicitly setting the name to be used while serializing to JSON.
+
 		[DataMember(Name = "y")]
-		public Nullable<int> Y {get;set;}
+		public int? Y {get;set;}
 	}
 }

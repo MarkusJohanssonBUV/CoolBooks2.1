@@ -45,8 +45,15 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public IActionResult Create(int id, int id2)
         {
+            ViewData["AllAuthors"] = _context.Authors.Where(x => x.AuthorID == id).ToList();
+            ViewData["AllBooks"] = _context.Books.Where(x => x.BooksID == id2).ToList();
+            if (id2 == null)
+            {
+                ViewData["AllBooks"] = null;
+            }
+
             ViewData["BookID"] = new SelectList(_context.Books, "BooksID", "Title");
             return View();
         }
@@ -62,6 +69,7 @@ namespace CoolBooks.Controllers
             {
                 var title = from b in _context.Books where b.BooksID == reviews.BookID select b.Title;
                 reviews.Title = title.FirstOrDefault();
+                reviews.Created = DateTime.Now.Date;
                 _context.Add(reviews);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

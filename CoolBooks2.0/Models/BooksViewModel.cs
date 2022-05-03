@@ -42,8 +42,7 @@ namespace CoolBooks.Models
         public List<int> RandomBooklist { get; set; }
 
 
-        public SelectList AuthorNameSelect { get; set; }
-        public SelectList GenreNameSelect { get; set; }
+        public int NumberOfReviews { get; set; }
         public List<string> UserName { get; set; }
 
         public DateTime? Created { get; set; }
