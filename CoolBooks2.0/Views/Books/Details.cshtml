@@ -45,14 +45,12 @@
     
     
 </article>
-@*
+
     <div class="row">
     <div class="col-md-4">
         <form asp-controller="Reviews" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for=@item.ReviewBookId class="control-label">Book</label>
-                <select asp-for=@item.ReviewBookId class ="form-control" asp-items="ViewBag.BookID"></select>
             </div>
             <div class="form-group">
                 <label asp-for="@item.ReviewTitle" class="control-label">Title</label>
@@ -74,7 +72,7 @@
             </div>
         </form>
     </div>
-</div>*@
+</div>
 
 <div>
     <a style="margin-top:10px;" class="btn btn-secondary" asp-controller="Reviews" asp-action="Create">Write a review!</a>

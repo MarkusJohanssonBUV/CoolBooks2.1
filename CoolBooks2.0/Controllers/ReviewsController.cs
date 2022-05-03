@@ -8,16 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoolBooks.Data;
 using CoolBooks.Models;
+using Microsoft.AspNetCore.Identity;
+using CoolBooks.Areas.Identity;
+
 
 namespace CoolBooks.Controllers
 {
     public class ReviewsController : Controller
     {
         private readonly CoolbooksContext _context;
-
-        public ReviewsController(CoolbooksContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ReviewsController(UserManager<ApplicationUser> userManager, CoolbooksContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reviews
@@ -56,17 +60,33 @@ namespace CoolBooks.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReviewsID,BookID,UserID,Title,Text,Rating,IdDeleted,Created")] Reviews reviews)
+        public async Task<IActionResult> Create(BooksViewModel booksView)
         {
-            if (ModelState.IsValid)
-            {
-                var title = from b in _context.Books where b.BooksID == reviews.BookID select b.Title;
-                reviews.Title = title.FirstOrDefault();
-                _context.Add(reviews);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(reviews);
+
+            var review = new Reviews();
+            review.BookID = booksView.BooksID;
+            review.Title = booksView.Title;
+            review.Text = booksView.ReviewText;
+            review.Rating = booksView.ReviewRating;
+            review.ClientId = _userManager.GetUserId(HttpContext.User);
+            review.Created = DateTime.Now;
+
+
+            await _context.Reviews.AddAsync(review);
+            _context.SaveChanges();
+
+
+
+
+            //if (ModelState.IsValid)
+            //{
+            //    var title = from b in _context.Books where b.BooksID == reviews.BookID select b.Title;
+            //    reviews.Title = title.FirstOrDefault();
+            //    _context.Add(reviews);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Reviews/Edit/5
