@@ -41,6 +41,7 @@
         <br>
         <p style="font-size: 18px;">@Html.DisplayFor(Model => Model.Description)</p>
     </div>
+
     <div style="grid-column-start: 5; grid-column-end: 9;">
 
             <h4>@Html.DisplayNameFor(model => model.Quote)</h4><br>
@@ -57,6 +58,39 @@
         <a asp-action="Create" asp-controller="Quotes" asp-route-id="@Model.AutorsId.FirstOrDefault()" asp-route-id2="@Model.BooksID" class="btn btn-primary">"Add a quote"</a> 
     </div>
 </article>
+
+
+    
+    
+</article>
+
+    <div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Reviews" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+            </div>
+            <div class="form-group">
+                <label asp-for="@item.ReviewTitle" class="control-label">Title</label>
+                <input asp-for="@item.ReviewTitle" class="form-control" />
+                <span asp-validation-for=@item.ReviewTitle class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@item.ReviewText" class="control-label">Text</label>
+                <input asp-for=@item.ReviewText class="form-control" />
+                <span asp-validation-for=@item.ReviewText class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for=@item.ReviewRating class="control-label">Rating</label>
+                <input asp-for=@item.ReviewRating class="form-control" />
+                <span asp-validation-for=@item.ReviewRating class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
 
 
 <div>
