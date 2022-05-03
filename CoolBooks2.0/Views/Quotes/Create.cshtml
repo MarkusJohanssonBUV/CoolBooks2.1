@@ -14,22 +14,23 @@
 <h4>Quotes</h4>
 <hr />
 <div class="row">
-    @*Försöka att få fram alla böcker som är kopplade till en specifik författare*@
-  @*  <div class="form-group">
-                        @Html.Label("Authors")
-                        @Html.DropDownListFor(a => a.AutorsId[0], new SelectList(ViewBag.AllAuthors,"AuthorID", "FullName",  new { @class = "form-control", chooseAuthor = ViewBag.chooseAuthor }))
-        </div>*@
+    
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                        @Html.Label("Authors")<br />
+                        
                         @Html.DropDownListFor(a => a.AutorsId[0], new SelectList(ViewBag.AllAuthors,"AuthorID", "FullName",  new { @class = "form-control"}))
+                   
             </div>
-            <div class="form-group">
-                        @Html.Label("Books")<br />
-                        @Html.DropDownListFor(a => a.BooksID, new SelectList(ViewBag.AllBooks, "BooksID", "Title",  new { @class = "form-control"}))
-            </div>
+            @if (ViewBag.AllBooks is not null)
+            {
+                   <div class="form-group">
+                       @Html.DropDownListFor(a => a.BooksID, new SelectList(ViewBag.AllBooks,"BooksID", "Title",  new { @class = "form-control"}))
+                    </div>
+                }
+                
+         
 
                            
                 <div class="form-group">

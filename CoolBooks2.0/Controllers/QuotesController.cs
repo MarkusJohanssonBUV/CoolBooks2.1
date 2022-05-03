@@ -45,16 +45,23 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Quotes/Create
-        public IActionResult Create()
+        public IActionResult Create(int id, int? id2)
         {
             
-            ViewData["AllBooks"] = _context.Books.ToList();
-            ViewData["AllAuthors"] = _context.Authors.ToList();
+            
+            ViewData["AllAuthors"] = _context.Authors.Where(x=>x.AuthorID ==id).ToList();
+            ViewData["AllBooks"] = _context.Books.Where(x => x.BooksID == id2).ToList();
+            if (id2 == null)
+            {
+                ViewData["AllBooks"] = null;
+            }
+            //ViewData["BookID"] = id2;
+            //ViewData["AuthorID"] = id;
 
-            //ViewData["AllBooks"] = new SelectList(_context.Books, "BooksD", "Title"); //genre.ToList(); 
-            //ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
             return View();
         }
+
+       
 
         // POST: Quotes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -63,13 +70,18 @@ namespace CoolBooks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BooksViewModel quotes)
         {
+          
             var quote = new Quotes()
             {
                 Quote = quotes.Quote.FirstOrDefault(),
                 BookID = quotes.BooksID,
                 AuthorID = quotes.AutorsId.FirstOrDefault(),
-                
+
             };
+            if (quote.BookID == 0)
+            {
+                quote.BookID = null;
+            }
             await _context.Quotes.AddAsync(quote);
             await _context.SaveChangesAsync();
 
