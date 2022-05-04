@@ -47,7 +47,7 @@ namespace CoolBooks.Models
         public List<string> UserName { get; set; }
 
         public DateTime? Created { get; set; }
-
+        public ICollection<ReviewComents> ReviewComents { get; set; }
         public List<int> AutorsId { get; set; }
         public List<int> GenresId { get; set; }
         public List<int> UserId { get; set; }

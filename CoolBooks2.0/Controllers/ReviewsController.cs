@@ -77,6 +77,7 @@ namespace CoolBooks.Controllers
             review.Text = booksView.ReviewText;
             review.Rating = booksView.ReviewRating;
             review.ClientId = _userManager.GetUserId(HttpContext.User);
+            review.UserName = _userManager.GetUserName(HttpContext.User);
             review.Created = DateTime.Now;
 
 
@@ -94,7 +95,7 @@ namespace CoolBooks.Controllers
             //    await _context.SaveChangesAsync();
             //    return RedirectToAction(nameof(Index));
             //}
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Books", new { id = booksView.BooksID });
 
         }
 
