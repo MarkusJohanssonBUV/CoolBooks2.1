@@ -20,6 +20,8 @@ namespace CoolBooks.Models
 		//Explicitly setting the name to be used while serializing to JSON.
 
 		[DataMember(Name = "y")]
+
 		public int? Y {get;set;}
 	}
+
 }

@@ -26,10 +26,10 @@ namespace CoolBooks.Models
         public DateTime? Created { get; set; }
 
         public bool IsBookOfTheWeek { get; set; }
-        public bool? NewestBook { get; set; } //ny ej (add-migration) än
-        public bool MostLikedBook { get; set; } //ny ej (add-migration) än
-        public bool MostCommetedBook { get; set; } //ny ej (add-migration) än
-        public bool MostDislikedBook { get; set; } // ny ej (add-migration) än
+        public bool? NewestBook { get; set; } 
+        public bool MostLikedBook { get; set; } 
+        public bool MostCommetedBook { get; set; } 
+        public bool MostDislikedBook { get; set; } 
 
         public ICollection<BooksAuthors> AuthorsFromBooks { get; set; }
         public ICollection<BooksGenres> GenresFromBooks { get; set; }
