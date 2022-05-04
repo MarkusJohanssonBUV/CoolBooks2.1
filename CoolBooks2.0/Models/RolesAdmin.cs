@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoolBooks.Models
 {
@@ -9,6 +10,8 @@ namespace CoolBooks.Models
         
         public int Id { get; set; }
 
+        [StringLength(100, MinimumLength = 3)]
+        [Required]
         public string RoleName { get; set; }
 
         

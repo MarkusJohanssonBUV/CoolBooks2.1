@@ -18,11 +18,25 @@ namespace CoolBooks.Models
 
         public int BooksID { get; set; }
 
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
         public string Title { get; set; }
+
+        [StringLength(1000, MinimumLength = 3)]
+        [Required]
         public string Description { get; set; }
+
+        [StringLength(100, MinimumLength = 3)]
+        [Required]
         public string ISBN { get; set; }
+
+        [StringLength(100, MinimumLength = 3)]
+        [Required]
         public string ImagePath { get; set; }
+
+
         public bool IsDeleted { get; set; }
+
         public DateTime? Created { get; set; }
 
         public bool IsBookOfTheWeek { get; set; }
