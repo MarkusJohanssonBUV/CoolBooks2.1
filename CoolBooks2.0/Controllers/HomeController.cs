@@ -112,6 +112,7 @@ namespace CoolBooks.Controllers
 
             var mostLikedBookId = mostLiked.OrderByDescending(x => x.RatingSum)
                 .Select(y => y.BooksID).FirstOrDefault();
+            
 
 
             var books = _context.Books;
@@ -148,10 +149,10 @@ namespace CoolBooks.Controllers
 
             foreach (var book in books)
             {
-                book.MostLikedBook = false;
+                book.MostDislikedBook= false;
                 if (book.BooksID == mostDisLikedBookId)
                 {
-                    book.MostLikedBook = true;
+                    book.MostDislikedBook = true;
                 }
                 _context.Books.Update(book);
             }
