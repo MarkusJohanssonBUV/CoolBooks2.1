@@ -11,7 +11,6 @@ using CoolBooks.Models;
 using Microsoft.AspNetCore.Identity;
 using CoolBooks.Areas.Identity;
 using Microsoft.AspNetCore.Authorization;
-using PagedList;
 
 
 namespace CoolBooks.Controllers

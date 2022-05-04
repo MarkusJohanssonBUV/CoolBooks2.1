@@ -4,12 +4,13 @@
 <script>
 window.onload = function () {
  
-var chart = new CanvasJS.Chart("chartContainer", {
+var chart = new CanvasJS.Chart("chartContainer", 
+{
 	animationEnabled: true,
 	theme: "light2", // "light1", "dark1", "dark2"
 	exportEnabled: true,
 	title: {
-		text: "Authors and their books "
+		text: "Coments on books (7 days) "
 	},
 	data: [{
 		type: "column",
@@ -17,11 +18,18 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	}]
 });
 chart.render();
- 
 }
+MostCommentedAuthorTotal
 </script>
 </head>
-<body>
+<body><h3>Most Commented:</h3>
+<a class="btn btn-secondary" asp-action="MostCommentedGenresToday">Genres Today!</a>
+<a class="btn btn-secondary" asp-action="MostCommentedGenres7days">Genres this Week</a>
+<a class="btn btn-secondary" asp-action="MostCommentedGenresTotal">Genres Totally</a>
+<a class="btn btn-secondary" asp-action="MostCommentedAuthor1days">Author Today</a>
+<a class="btn btn-secondary" asp-action="MostCommentedAuthor7days">Author This Week</a>
+<a class="btn btn-secondary" asp-action="MostCommentedAuthorTotal">Author Totally</a>
+
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

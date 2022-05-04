@@ -19,5 +19,8 @@ namespace CoolBooks.Models
 		//Explicitly setting the name to be used while serializing to JSON.
 		[DataMember(Name = "y")]
 		public Nullable<int> Y {get;set;}
-	}
+
+       // public DateTime ToDay { get; set; }
+
+    }
 }
