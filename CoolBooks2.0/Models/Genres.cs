@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoolBooks.Models
 {
@@ -9,7 +10,13 @@ namespace CoolBooks.Models
     {
        
         public int GenreID { get; set; }
+
+        [StringLength(100, MinimumLength = 3)]
+        [Required]
         public string Name { get; set; }
+
+        [StringLength(1000, MinimumLength = 3)]
+        [Required]
         public string Description { get; set; }
         public DateTime? Created { get; set; }
 

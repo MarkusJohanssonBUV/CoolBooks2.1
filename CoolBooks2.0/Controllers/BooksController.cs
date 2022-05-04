@@ -50,8 +50,8 @@ namespace CoolBooks.Controllers
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                     Reviews = p.Reviews.ToList(),
-                    Quotes = p.Quotes.ToList()
-                    
+                    Quotes = p.Quotes.ToList(),
+                 
                 })
                 .ToList();
 
@@ -119,8 +119,8 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-           
-            
+
+          
             var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
 
             return View(coolbooksContext);
