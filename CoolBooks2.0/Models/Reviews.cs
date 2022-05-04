@@ -13,7 +13,7 @@ namespace CoolBooks.Models
         public int ReviewsID { get; set; }
         public string? Title { get; set; }
         public string? Text { get; set; }
-        public string? Rating { get; set; }
+        public int? Rating { get; set; }
         public bool? IsDeleted { get; set; }
         [DisplayFormat(DataFormatString = "{0:dddd, dd MMMM yyy}", ApplyFormatInEditMode = true)]
         public DateTime? Created { get; set; }
@@ -21,6 +21,7 @@ namespace CoolBooks.Models
         public Books Book { get; set; }
         public ICollection<ReviewComents> ReviewComent{ get; set; }
 
+        public string UserName{ get; set; }
         public string ClientId { get; set; }
 
         public ApplicationUser Client { get; set; }

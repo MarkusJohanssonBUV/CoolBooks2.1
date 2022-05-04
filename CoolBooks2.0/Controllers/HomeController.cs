@@ -62,8 +62,8 @@ namespace CoolBooks.Controllers
                     GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
-                    Reviews = p.Reviews.ToList()
-
+                    Reviews = p.Reviews.ToList(),
+                    RatingAvg = p.Reviews.Select(m => m.Rating).Average(),
                 })
                 .ToList();
 
@@ -99,9 +99,72 @@ namespace CoolBooks.Controllers
 
         }
 
+        private void MostLikedBook()
+        {
+           
+            var mostLiked = GetAllBooks().GroupBy(x => new { x.RatingAvg, x.BooksID })
+                .Where(x=>x.Key.RatingAvg != null)
+               .Select(y => new
+               {
+                   BooksID = y.Key.BooksID,
+                   RatingSum = y.Key.RatingAvg
+               });
+
+            var mostLikedBookId = mostLiked.OrderByDescending(x => x.RatingSum)
+                .Select(y => y.BooksID).FirstOrDefault();
+
+
+            var books = _context.Books;
+
+            foreach (var book in books)
+            {
+                book.MostLikedBook = false;
+                if (book.BooksID == mostLikedBookId)
+                {
+                    book.MostLikedBook = true;
+                }
+                _context.Books.Update(book);
+            }
+
+            _context.SaveChanges();
+
+        }
+        private void MostDisLikedBook()
+        {
+
+            var mostDisLiked = GetAllBooks().GroupBy(x => new { x.RatingAvg, x.BooksID })
+                .Where(x => x.Key.RatingAvg != null)
+               .Select(y => new
+               {
+                   BooksID = y.Key.BooksID,
+                   RatingSum = y.Key.RatingAvg
+               });
+
+            var mostDisLikedBookId = mostDisLiked.OrderBy(x => x.RatingSum)
+                .Select(y => y.BooksID).FirstOrDefault();
+
+
+            var books = _context.Books;
+
+            foreach (var book in books)
+            {
+                book.MostLikedBook = false;
+                if (book.BooksID == mostDisLikedBookId)
+                {
+                    book.MostLikedBook = true;
+                }
+                _context.Books.Update(book);
+            }
+
+            _context.SaveChanges();
+
+        }
+
         public IActionResult Index()
         {
             MostReviewedBook();
+            MostLikedBook();
+            MostDisLikedBook();
             ViewData["Random"] = RandomBooks();
             
 

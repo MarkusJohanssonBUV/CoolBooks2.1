@@ -51,6 +51,7 @@ namespace CoolBooks.Controllers
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                     Reviews = p.Reviews.ToList(),
                     Quotes = p.Quotes.ToList()
+                    
                 })
                 .ToList();
 
@@ -118,7 +119,8 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-
+           
+            
             var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
 
             return View(coolbooksContext);
@@ -145,7 +147,7 @@ namespace CoolBooks.Controllers
             book.Description = booksView.Description;
             book.ISBN = booksView.ISBN;
             book.ImagePath = booksView.ImagePath;
-            book.Created = DateTime.Now;
+            book.Created = DateTime.Now.Date;
             
 
             await _context.Books.AddAsync(book);
