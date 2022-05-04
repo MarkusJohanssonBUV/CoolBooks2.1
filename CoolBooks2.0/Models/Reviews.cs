@@ -24,7 +24,9 @@ namespace CoolBooks.Models
         public ICollection<ReviewComents> ReviewComent{ get; set; }
 
         public string UserName{ get; set; }
+
         public string ClientId { get; set; }
+        public string UserName { get; set; }
 
         public ApplicationUser Client { get; set; }
 

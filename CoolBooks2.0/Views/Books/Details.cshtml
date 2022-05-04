@@ -1,4 +1,8 @@
-﻿@model CoolBooks.Models.BooksViewModel
+﻿@using System.Linq;
+@using Microsoft.AspNetCore.Identity;
+@using CoolBooks.Areas.Identity;
+@model CoolBooks.Models.BooksViewModel
+@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 
@@ -58,21 +62,17 @@
         <a asp-action="Create" asp-controller="Quotes" asp-route-id="@Model.AutorsId.FirstOrDefault()" asp-route-id2="@Model.BooksID" class="btn btn-primary">"Add a quote"</a> 
     </div>
 </article>
-    
-</article>
+   
+<h2>Reviews: </h2>
 
 <div>
-    
-    <a style="margin-top:10px;" class="btn btn-secondary" asp-controller="Reviews" asp-action="Create" asp-route-id="@Model.AutorsId.FirstOrDefault()" asp-route-id2="@Model.BooksID">Write a review!</a>
-    <h2>Reviews: </h2>
     <div class="row">
     <div class="col-md-4">
         <form asp-controller="Reviews" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @Html.HiddenFor(model => model.BooksID)
-            </div>
-            
+          </div>
             <div class="form-group">
                 <label asp-for="@Model.ReviewText" class="control-label">Text</label>
                 <input asp-for=@Model.ReviewText class="form-control" />
@@ -84,11 +84,61 @@
                 <span asp-validation-for=@Model.ReviewRating class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-secondary" />
+                <input type="submit" value="Post review!" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
+
+
+
+<div>
+    
+    <hr />
+        @foreach (var reviews in Model.Reviews)
+        {
+            bool hasReacted = true;
+            bool liked = true;
+            int comentId = 0;
+            <h3>@Html.DisplayFor(Model => reviews.UserName)</h3>
+            <p style="font-size:18px;">@Html.DisplayFor(Model => reviews.Text)</p>
+            <h5 style="font-size:18px;">Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
+            
+            @foreach(var coment in ViewBag.AllReviewComents)
+            {
+                @if (coment.ClientId == UserManager.GetUserId(User) && coment.ReviewsID == reviews.ReviewsID)
+                {
+                    hasReacted = false;
+                    if (coment.React)
+                    {
+                        liked = true;
+                    }
+                    else
+                    {
+                        liked = false;
+                    }
+                    comentId = coment.ReviewsID;
+                }
+                
+            }
+            if (hasReacted)
+            {
+                <a asp-action="Like" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👍</a>
+                <a asp-action="Dislike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👎</a>
+
+            }
+            else if(!hasReacted && liked)
+            {
+                <a class="btn btn-success">👍</a>
+                <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👎</a>
+            }
+            else if(!hasReacted && !liked)
+            {
+                <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👍</a>
+                <a class="btn btn-danger">👎</a>
+            }
+
+
     <hr />
         @foreach (var reviews in Model.Reviews)
         {
@@ -96,6 +146,7 @@
             <p style="font-size:18px;">@Html.DisplayFor(Model => reviews.Text)</p>
             <h5 style="font-size:18px;">Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
             <a asp-action="Create" asp-controller="Quotes" asp-route-id=@Html.ValueFor(Model => reviews.ReviewsID) class="btn btn-primary">"Add a quote"</a> 
+
         }
 </div>
 

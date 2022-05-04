@@ -83,7 +83,7 @@ namespace CoolBooks.Controllers
 
             await _context.Reviews.AddAsync(review);
             _context.SaveChanges();
-           
+
             return RedirectToAction("Details", "Books", new { id = booksView.BooksID });
 
         }
