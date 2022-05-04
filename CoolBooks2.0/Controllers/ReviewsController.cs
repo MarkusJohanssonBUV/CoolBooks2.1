@@ -77,24 +77,14 @@ namespace CoolBooks.Controllers
             review.Text = booksView.ReviewText;
             review.Rating = booksView.ReviewRating;
             review.ClientId = _userManager.GetUserId(HttpContext.User);
+            review.UserName = _userManager.GetUserName(HttpContext.User);
             review.Created = DateTime.Now;
 
 
             await _context.Reviews.AddAsync(review);
             _context.SaveChanges();
-
-
-
-
-            //if (ModelState.IsValid)
-            //{
-            //    var title = from b in _context.Books where b.BooksID == reviews.BookID select b.Title;
-            //    reviews.Title = title.FirstOrDefault();
-            //    _context.Add(reviews);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            return RedirectToAction(nameof(Index));
+           
+            return RedirectToAction("Details", "Books", new { id = booksView.BooksID });
 
         }
 
