@@ -37,12 +37,13 @@ namespace CoolBooks.Models
         public List<Reviews>? Reviews { get; set; }
         public string ReviewText { get; set; }
         public string ReviewTitle { get; set; }
-        public string ReviewRating { get; set; }
+        public int ReviewRating { get; set; }
+        public double? RatingAvg { get; set; }
         public string ReviewBookId { get; set; }
         public string ClientId { get; set; }    
         public List<int> RandomBooklist { get; set; }
 
-
+       
         public int NumberOfReviews { get; set; }
         public List<string> UserName { get; set; }
 
