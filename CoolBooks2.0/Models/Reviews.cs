@@ -16,6 +16,7 @@ namespace CoolBooks.Models
         public string? Rating { get; set; }
         public bool? IsDeleted { get; set; }
 
+      
         [DisplayFormat(DataFormatString = "{0:dddd, dd MMMM yyy}", ApplyFormatInEditMode = true)]
         public DateTime? Created { get; set; }
         public int BookID { get; set; }

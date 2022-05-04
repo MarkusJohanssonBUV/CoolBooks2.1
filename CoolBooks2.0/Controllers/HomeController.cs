@@ -19,7 +19,7 @@ namespace CoolBooks.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        private List<int> RandomBooks()
         {
             var books = _context.Books.ToList();
             var excludedBooks = books.Where(x => x.IsBookOfTheWeek || x.IsDeleted || x.MostCommetedBook || x.MostDislikedBook || x.MostLikedBook).Select(y => y.BooksID).ToList();
@@ -33,17 +33,18 @@ namespace CoolBooks.Controllers
                 if (!excludedBooks.Contains(randomNumber))
                 {
                     if (!RandomBooklist.Contains(randomNumber))
-                        {
-                            RandomBooklist.Add(randomNumber);
-                        }
-                    
+                    {
+                        RandomBooklist.Add(randomNumber);
+                    }
+
                 }
 
-                
-
             }
-            ViewData["Random"] = RandomBooklist;
+            return RandomBooklist;
+        }
 
+        private List<BooksViewModel> GetAllBooks()
+        {
             var coolbooksContext = _context.Books
                 .Select(p => new BooksViewModel
                 {
@@ -53,21 +54,58 @@ namespace CoolBooks.Controllers
                     ISBN = p.ISBN,
                     ImagePath = p.ImagePath,
                     Created = p.Created,
-                    IsBookOfTheWeek =p.IsBookOfTheWeek,
-                    MostCommetedBook =p.MostCommetedBook,
-                    MostLikedBook =p.MostLikedBook,
-                    MostDislikedBook =p.MostDislikedBook,
-                    NewestBook =p.NewestBook,
-                    
+                    IsBookOfTheWeek = p.IsBookOfTheWeek,
+                    MostCommetedBook = p.MostCommetedBook,
+                    MostLikedBook = p.MostLikedBook,
+                    MostDislikedBook = p.MostDislikedBook,
+                    NewestBook = p.NewestBook,
                     GenreName = (List<string>)p.GenresFromBooks.Select(m => m.Genre.Name),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
-                    
+                    Reviews = p.Reviews.ToList()
+
                 })
                 .ToList();
-           
 
-            return View(coolbooksContext);
+            return coolbooksContext;
+        }
+
+        private void MostReviewedBook()
+        {
+            var mostReviews = GetAllBooks().GroupBy(x => new { x.Reviews, x.BooksID })
+               .Select(y => new
+               {
+                   BooksID = y.Key.BooksID,
+                   NumberOfReviews = y.Key.Reviews.Count()
+               });
+
+            var mostReviewsBookId = mostReviews.OrderByDescending(x => x.NumberOfReviews)
+                .Select(y => y.BooksID).FirstOrDefault();
+
+
+            var books = _context.Books;
+                        
+            foreach (var book in books)
+            {
+                book.MostCommetedBook = false;
+                if (book.BooksID == mostReviewsBookId)
+                {
+                    book.MostCommetedBook = true;
+                }
+                _context.Books.Update(book);
+            }
+
+            _context.SaveChanges();
+
+        }
+
+        public IActionResult Index()
+        {
+            MostReviewedBook();
+            ViewData["Random"] = RandomBooks();
+            
+
+            return View(GetAllBooks());
         }
 
         public IActionResult About()

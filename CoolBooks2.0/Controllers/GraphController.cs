@@ -43,8 +43,11 @@ namespace CoolBooks.Controllers
             //       })
             //       .ToList();
 
+            //var test = _context.Reviews.ToList();
+
 
             //ViewBag.DataPoints = JsonConvert.SerializeObject(coolbooksContext);
+
 
             return View();
 

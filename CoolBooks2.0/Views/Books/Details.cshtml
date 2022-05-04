@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CoolBooks.Models.BooksViewModel>
+﻿@model CoolBooks.Models.BooksViewModel
 
 <!DOCTYPE html>
 
@@ -21,38 +21,54 @@
     <title>Details</title>
 </head>
 <body>
-    @foreach (var item in Model)
-        {
-<h2>@Html.DisplayFor(Model => item.Title)</h2>
+    
+<h2>@Html.DisplayFor(Model => Model.Title)</h2>
 
 <article class="infobody">
-    <img alt=""  src="@Html.DisplayFor(modelItem => item.ImagePath)">
+    <img alt=""  src="@Html.DisplayFor(modelItem => Model.ImagePath)">
     <div>
         <h4 style="margin-left:15px;">
             Författare: <br>
-            @Html.DisplayFor(Model => item.AuthorName)
+            @Html.DisplayFor(Model => Model.AuthorName)
             <br>
             <br>
             Genre:<br>
-            @Html.DisplayFor(Model => item.GenreName)
+            @Html.DisplayFor(Model => Model.GenreName)
         </h4>
     </div>
-    <div style="grid-column-start: 3; grid-column-end: 6;">
+    <div style="grid-column-start: 3; grid-column-end: 5;">
         <h4>Description:</h4>
         <br>
-        <p style="font-size: 18px;">@Html.DisplayFor(Model => item.Description)</p>
+        <p style="font-size: 18px;">@Html.DisplayFor(Model => Model.Description)</p>
     </div>
+
+    <div style="grid-column-start: 5; grid-column-end: 9;">
+
+            <h4>@Html.DisplayNameFor(model => model.Quote)</h4><br>
+       
+
+          @foreach (var item in Model.Quotes)
+        {
+                if (item.IsQuoteModerated)
+                {
+                    @Html.DisplayFor(model => item.Quote)<br>
+                }
+        }
+        <br>
+        <a asp-action="Create" asp-controller="Quotes" asp-route-id="@Model.AutorsId.FirstOrDefault()" asp-route-id2="@Model.BooksID" class="btn btn-primary">"Add a quote"</a> 
+    </div>
+</article>
+
+
     
     
 </article>
-@*
+
     <div class="row">
     <div class="col-md-4">
         <form asp-controller="Reviews" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for=@item.ReviewBookId class="control-label">Book</label>
-                <select asp-for=@item.ReviewBookId class ="form-control" asp-items="ViewBag.BookID"></select>
             </div>
             <div class="form-group">
                 <label asp-for="@item.ReviewTitle" class="control-label">Title</label>
@@ -74,23 +90,28 @@
             </div>
         </form>
     </div>
-</div>*@
+</div>
+
 
 <div>
-    <a style="margin-top:10px;" class="btn btn-secondary" asp-controller="Reviews" asp-action="Create">Write a review!</a>
+    
+    <a style="margin-top:10px;" class="btn btn-secondary" asp-controller="Reviews" asp-action="Create" asp-route-id="@Model.AutorsId.FirstOrDefault()" asp-route-id2="@Model.BooksID">Write a review!</a>
     <h2>Reviews: </h2>
+    @Html.TextAreaFor(Model=>Model.ReviewText)
+    @Html.TextBoxFor(model=>model.ReviewRating)
     <hr />
-        @foreach (var reviews in item.Reviews)
+        @foreach (var reviews in Model.Reviews)
         {
             <h3>@Html.DisplayFor(Model => reviews.ClientId)</h3>
             <p style="font-size:18px;">@Html.DisplayFor(Model => reviews.Text)</p>
             <h5 style="font-size:18px;">Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
         }
 </div>
-}
+
 <div>
-    <a asp-action="Edit" asp-route-id="item.BooksID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.BooksID">Edit</a> |
     <a asp-action="Index">Back</a>
+    
 </div>
         
         
