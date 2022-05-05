@@ -122,7 +122,7 @@ namespace CoolBooks.Controllers
            
             
             var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
-            ViewData["AllReviewComents"] = _context.ReviewComents.Select(x => new { x.React, x.ClientId, x.ReviewsID}).ToList();
+            ViewData["AllReviewComents"] = _context.ReviewComents.Select(x => new { x.React, x.ClientId, x.ReviewsID, x.ReviewComentsID}).ToList();
             return View(coolbooksContext);
 
         }
