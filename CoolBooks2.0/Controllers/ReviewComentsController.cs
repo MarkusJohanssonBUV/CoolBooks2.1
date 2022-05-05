@@ -44,7 +44,6 @@ namespace CoolBooks.Controllers
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
-
         public async Task<IActionResult> Dislike(int id, int id2)
         {
 
@@ -62,38 +61,34 @@ namespace CoolBooks.Controllers
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
-        public async Task<IActionResult> UpdateDislike(int id, int id2)
+        public async Task<IActionResult> UpdateDislike(int id, int id2, int id3)
         {
 
             var reviewComents = new ReviewComents();
-            reviewComents.ReviewsID = id;
+            reviewComents.ReviewComentsID = id;
+            reviewComents.ReviewsID = id3;
             reviewComents.React = false;
             reviewComents.ClientId = _userManager.GetUserId(HttpContext.User);
 
             _context.ReviewComents.Update(reviewComents);
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
 
 
 
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
-        public async Task<IActionResult> UpdateLike(Reviews reviews, int id, int id2)
+        public async Task<IActionResult> UpdateLike(Reviews reviews, int id, int id2, int id3)
         {
 
-            var reviewComents = new ReviewComents()
-            {
-                ReviewsID = id,
-                React = true,
-                ClientId = _userManager.GetUserId(HttpContext.User),
-
-            };
-            
+            var reviewComents = new ReviewComents();
+            reviewComents.ReviewComentsID = id;
+            reviewComents.ReviewsID = id3;
+            reviewComents.React = true;
+            reviewComents.ClientId = _userManager.GetUserId(HttpContext.User);
 
             _context.ReviewComents.Update(reviewComents);
-            _context.SaveChanges();
-            
+            await _context.SaveChangesAsync();
 
 
 
