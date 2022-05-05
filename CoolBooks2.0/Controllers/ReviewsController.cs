@@ -78,7 +78,7 @@ namespace CoolBooks.Controllers
             review.Rating = booksView.ReviewRating;
             review.ClientId = _userManager.GetUserId(HttpContext.User);
             review.UserName = _userManager.GetUserName(HttpContext.User);
-            review.Created = DateTime.Now;
+            review.Created = DateTime.Now.Date;
 
 
             await _context.Reviews.AddAsync(review);
@@ -172,6 +172,32 @@ namespace CoolBooks.Controllers
         private bool ReviewsExists(int id)
         {
             return _context.Reviews.Any(e => e.ReviewsID == id);
+        }
+
+        public async Task<IActionResult> NotFlag(int id, int id2)
+        {
+            var review = _context.Reviews.Where(r=>r.ReviewsID == id).FirstOrDefault();
+            review.Flag = true;
+
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Details", "Books", new { id = id2 });
+
+        }
+
+        public async Task<IActionResult> IsFlag(int id, int id2)
+        {
+            var review = _context.Reviews.Where(r => r.ReviewsID == id).FirstOrDefault();
+            review.Flag = false;
+
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Details", "Books", new { id = id2 });
+
         }
     }
 }

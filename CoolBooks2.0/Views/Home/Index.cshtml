@@ -9,7 +9,7 @@
 <div class="grid-container">
 
     <div class = "TopBaner">
-        <h1>Wellcome to CoolBooks</h1>
+        <h1>Welcome to CoolBooks</h1>
        @*//<img src= "https://image.shutterstock.com/image-vector/poster-banner-design-library-bookstore-600w-1522828046.jpg" alt="index">*@
     </div>
 
@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                 <td>
-                <img alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)">
+                <img alt="" src="@Html.DisplayFor(modelItem => item.ImagePath)" >
                 
                 </td>
             </tr>
@@ -91,7 +91,7 @@
     {
       @if(item.MostLikedBook == true)
         {
-            <div class="text"><h4>Most Liked</h4></div>
+            <div class="text"><h4>Best Rating</h4></div>
             <div class="numbertext">1 / 3</div>
             <img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:100%">
     <a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a>
@@ -117,7 +117,7 @@
     {
       @if(item.MostDislikedBook)
       {
-          <div class="text"><h4>Most disliked</h4></div>
+          <div class="text"><h4>Worst Rating</h4></div>
         <div class="numbertext">3 / 3</div>
         <img src = "@Html.DisplayFor(modelItem => item.ImagePath)" alt="Index" style="width:100%">
         <a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a>
@@ -140,27 +140,32 @@
 </div>
 <div class = "TopBooks">
   
+    
 
-        
+    
         @foreach(var item in Model)
             {
+
              @if (ViewBag.Random.Contains(item.BooksID))
                {
                        @*<a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a>
                         <img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:10%">*@
                         <table style="width:100%">
-  <tr>
-    <td><img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:100%"></td>
-  </tr>
-  <tr>
-    <th><a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a></th>
-  </tr>
+                          <tr>
+                            <td><img src="@Html.DisplayFor(modelItem => item.ImagePath)" style="width:100%"></td>
+                          </tr>
+                          <tr>
+                            <th><a class="btn btn-secondary" asp-controller="Books" asp-action="Details" asp-route-id="@item.BooksID">View</a></th>
+                          </tr>
 
  
-</table>
+                        </table>
+
                 }
-              }            
-    </div>
+
+            }         
+        
+</div>
 
 </div>
 
@@ -176,9 +181,10 @@
 
 .grid-container {
   display: grid;
+  grid-column-start: 1; grid-column-end: 6; 
   grid-template-areas: 
   'TopBaner'
-  'BookOfTheWeek'
+  'BookOfTheWeek' 
   'slideshow-container'
   'TopBooks';
   padding: 10px;
@@ -190,11 +196,15 @@
 }
 .TopBaner
 {
+    grid-column-start: 1; grid-column-end: 6; 
+    @*margin-left: 400px;*@
   backdrop-filter: blur(8px);
 text-align: center;
+margin-bottom:20px
 }
 .BookOfTheWeekTitle
 {
+
     grid-area: BookOfTheWeekTitle;
     backdrop-filter: blur(8px);
     border-radius: 25px;
@@ -217,7 +227,9 @@ text-align: center;
 
 .BookOfTheWeek {
   display: grid;
-   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-start: 1; grid-column-end: 3; 
+   grid-template-columns: 1fr 1fr 1fr;
+   margin-left: 200px;
   grid-template-rows: 0.1fr 1fr;
   grid-template-areas:
   "BookOfTheWeekTitle BookOfTheWeekTitle " 
@@ -232,25 +244,33 @@ text-align: center;
 * {box-sizing:border-box}
 
 .TopBooks {
+    grid-column-start:1;
+    grid-column-end:6;
     display: flex;
     flex-wrap: nowrap;
+    justify-self:center;
+    margin-top: 20px;
     text-align: left;
     backdrop-filter: blur(8px);
     border-radius: 25px;
 }
 
-.TopBooks > div {
+@*.TopBooks > div {
     padding: 2%;
     text-align: left;
-}
+    
+}*@
 
 
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
-  position: relative;
-  margin: auto;
+ grid-column-start: 4; 
+    grid-column-end: 6; 
+  @*max-width: 1000px;
+  position: relative;*@
+ @* margin: auto;*@
+ margin-right: 200px;
   backdrop-filter: blur(8px);
     border-radius: 25px;
 }
@@ -289,7 +309,7 @@ text-align: center;
 
 /* Caption text */
 .text {
-  color: white;
+  color: black;
   font-size: 15px;
   padding: 8px 12px;
   position: absolute;

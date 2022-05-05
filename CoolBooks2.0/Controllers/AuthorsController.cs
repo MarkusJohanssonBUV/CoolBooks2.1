@@ -70,7 +70,7 @@ namespace CoolBooks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AuthorID,FirstName,LastName")] Authors authors)
         {
-            authors.Created = DateTime.Now;
+            authors.Created = DateTime.Now.Date;
             if (ModelState.IsValid)
             {
                 _context.Add(authors);
