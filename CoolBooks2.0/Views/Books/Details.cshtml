@@ -3,6 +3,7 @@
 @using CoolBooks.Areas.Identity;
 @model CoolBooks.Models.BooksViewModel
 @inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 <!DOCTYPE html>
 
@@ -66,7 +67,17 @@
 <h2>Reviews: </h2>
 
 
+
+    
+    <hr />
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+   
+    <h2>Reviews: </h2>
+
 <div class="row">
+
 
     <div class="col-md-4">
         <form asp-controller="Reviews" asp-action="Create" method="post">
@@ -107,6 +118,7 @@
             <p style="font-size:18px;">@Html.DisplayFor(Model => reviews.Text)</p>
             <h5 style="font-size:18px;">Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
             
+
             @foreach(var coment in ViewBag.AllReviewComents)
             {
                 @if (coment.ClientId == UserManager.GetUserId(User) && coment.ReviewsID == reviews.ReviewsID)
@@ -115,12 +127,16 @@
                     if (coment.React)
                     {
                         liked = true;
+                        
                     }
                     else
                     {
                         liked = false;
+                       
                     }
-                    comentId = coment.ReviewComentsID;
+
+                     comentId = coment.ReviewComentsID;
+
                 }
                 if (coment.React && coment.ReviewsID == reviews.ReviewsID)
                 {
@@ -140,23 +156,40 @@
             }
             else if(!hasReacted && liked)
             {
-                <a class="btn btn-success">@likes 👍</a>
-                <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">@disLikes 👎</a>
+
+                <a class="btn btn-success">👍</a>
+                <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">👎</a>
             }
             else if(!hasReacted && !liked)
             {
-                <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">@likes 👍</a>
-                <a class="btn btn-danger">@disLikes 👎</a>
+                <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">👍</a>
+                <a class="btn btn-danger">👎</a>
             }
+                
+            @if (User.IsInRole("Admin"))
+            {
+                 @if (reviews.Flag)
+                    {
+                        <a>🚩</a>
+                    }
+                      else
+                    {
+                        <a asp-action="NotFlag" asp-controller="Reviews" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID style="text-decoration: none;">🏳‍🌈</a>
+                    }
+            }
+                   
+                  
+                    
+             
+
         }
 
-}
 
 
     
 
 </div>
-
+ }
 <div>
     <a asp-action="Edit" asp-route-id="@Model.BooksID">Edit</a> |
     <a asp-action="Index">Back</a>

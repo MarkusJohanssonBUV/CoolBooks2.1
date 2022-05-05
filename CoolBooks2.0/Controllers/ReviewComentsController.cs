@@ -29,7 +29,9 @@ namespace CoolBooks.Controllers
         }
         public async Task<IActionResult> Like(int id, int id2)
         {
-        
+
+           
+
             var reviewComents = new ReviewComents();
             reviewComents.ReviewsID = id;
             reviewComents.React = true;

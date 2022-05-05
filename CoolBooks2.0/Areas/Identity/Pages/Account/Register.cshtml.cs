@@ -132,7 +132,7 @@ namespace CoolBooks.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                Input.Created = DateTime.Now;
+                Input.Created = DateTime.Now.Date;
                 user.Created = Input.Created;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

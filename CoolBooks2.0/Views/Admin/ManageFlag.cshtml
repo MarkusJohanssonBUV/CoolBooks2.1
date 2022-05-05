@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CoolBooks.Models.Reviews>
+
+
+
+    <table class="table table-dark table-striped table-borderless table-hover align-top">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flag)
+            </th>
+           
+        </tr>
+    </thead>
+        @using (Html.BeginForm("ManageFlag", "Admin", FormMethod.Post))
+        {
+              <tbody>
+                 @foreach (var item in Model)
+                 {
+                     
+
+
+                        <tr class="table-info table-light">
+                            <td>
+                
+                                @Html.DisplayFor(modelItem=>item.Text)
+             
+                            </td>
+                            <td>
+                                <div class="switch_box box_1" > 
+                                  @Html.CheckBoxFor(modelItem=>item.Flag, new{ @class="switch_1"})   
+                                 
+                                  @Html.HiddenFor(modelItem=>item.BookID)
+                                   @Html.HiddenFor(modelItem=>item.ClientId)
+                                    @Html.HiddenFor(modelItem=>item.Created)
+                                     @Html.HiddenFor(modelItem=>item.IsDeleted)
+                                     @Html.HiddenFor(modelItem=>item.Rating)
+                                     @Html.HiddenFor(modelItem=>item.ReviewsID)
+                                     @Html.HiddenFor(modelItem=>item.UserName)
+                                </div>
+                
+                            </td>
+            
+                        </tr>
+                        }
+            </tbody>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+
+
+    }
+      
+</table>

@@ -70,6 +70,31 @@ namespace CoolBooks.Controllers
             return RedirectToAction("Index", "Quotes");
         }
 
+        public async Task<IActionResult> ManageFlag()
+        {
+            var reviews = from q in _context.Reviews where q.Flag == true select q;
+            
+
+
+            return View(reviews.ToList());
+
+        }
+
+        [HttpPost]
+        public IActionResult ManageFlag(IEnumerable<Reviews> flag)
+        {
+
+            foreach (var rev in flag)
+            {
+
+                _context.Reviews.Update(rev);
+            }
+
+            _context.SaveChanges();
+
+            return View();
+        }
+
     }
 
     

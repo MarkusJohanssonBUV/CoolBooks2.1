@@ -14,7 +14,6 @@ namespace CoolBooks.Models
         public int ReviewsID { get; set; }
 
         [StringLength(30, MinimumLength = 3)]
-        [Required]
         public string? Title { get; set; }
 
         [StringLength(1000, MinimumLength = 3)]
@@ -24,7 +23,9 @@ namespace CoolBooks.Models
         public int? Rating { get; set; }
         public bool? IsDeleted { get; set; }
 
-      
+        public bool Flag { get; set; }
+
+
         [DisplayFormat(DataFormatString = "{0:dddd, dd MMMM yyy}", ApplyFormatInEditMode = true)]
         public DateTime? Created { get; set; }
         public int BookID { get; set; }
