@@ -16,6 +16,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+.actionLink {
+    color: white;
+    text-decoration: none;
+}
 
 
 input[type="checkbox"].switch_1 {

@@ -31,7 +31,7 @@ namespace CoolBooks.Controllers
             this.roleManager = roleManager;
         }
 
-
+        
         private List<BooksViewModel> GetAllBooks()
         {
             var coolbooksContext = _context.Books
@@ -50,8 +50,8 @@ namespace CoolBooks.Controllers
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                     Reviews = p.Reviews.ToList(),
-                    Quotes = p.Quotes.ToList()
-                    
+                    Quotes = p.Quotes.ToList(),
+                 
                 })
                 .ToList();
 
@@ -119,10 +119,10 @@ namespace CoolBooks.Controllers
             {
                 return NotFound();
             }
-           
-            
-            var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
 
+          
+            var coolbooksContext =GetAllBooks().Where(p => p.BooksID == id).FirstOrDefault();
+            ViewData["AllReviewComents"] = _context.ReviewComents.Select(x => new { x.React, x.ClientId, x.ReviewsID}).ToList();
             return View(coolbooksContext);
 
         }
@@ -133,6 +133,7 @@ namespace CoolBooks.Controllers
         {
             ViewData["AllGenres"] = new SelectList(_context.Genres, "GenreID", "Name"); //genre.ToList(); 
             ViewData["AllAuthors"] = new SelectList(_context.Authors, "AuthorID", "FullName"); //genre.ToList(); 
+            
             return View();
         }
 

@@ -7,6 +7,9 @@ namespace CoolBooks.Models
     {
         [Key]
         public int QuoteId { get; set; }
+
+        [StringLength(1000, MinimumLength = 3)]
+        [Required]
         public string Quote { get; set; }
         public bool IsQuoteModerated { get; set; }
 

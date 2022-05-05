@@ -11,7 +11,13 @@ namespace CoolBooks.Models
     {
         [Key]
         public int AuthorID { get; set; }
+
+        [StringLength(20, MinimumLength = 3)]
+        [Required]
         public string FirstName { get; set; }
+
+        [StringLength(30, MinimumLength = 3)]
+        [Required]
         public string LastName { get; set; }
         public DateTime? Created { get; set; }
        

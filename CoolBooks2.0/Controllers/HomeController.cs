@@ -64,6 +64,7 @@ namespace CoolBooks.Controllers
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
                     Reviews = p.Reviews.ToList(),
                     RatingAvg = p.Reviews.Select(m => m.Rating).Average(),
+
                 })
                 .ToList();
 
@@ -131,7 +132,8 @@ namespace CoolBooks.Controllers
         }
         private void MostDisLikedBook()
         {
-
+            var pastDate = DateTime.Now.Date.AddDays(-7);
+           
             var mostDisLiked = GetAllBooks().GroupBy(x => new { x.RatingAvg, x.BooksID })
                 .Where(x => x.Key.RatingAvg != null)
                .Select(y => new
@@ -148,10 +150,10 @@ namespace CoolBooks.Controllers
 
             foreach (var book in books)
             {
-                book.MostLikedBook = false;
+                book.MostDislikedBook = false;
                 if (book.BooksID == mostDisLikedBookId)
                 {
-                    book.MostLikedBook = true;
+                    book.MostDislikedBook = true;
                 }
                 _context.Books.Update(book);
             }

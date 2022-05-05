@@ -32,10 +32,19 @@
 <table class="main-container opacity-tabel table-defult table-striped table-borderless  align-top ">
     <thead>
         <tr>
-           <hr />
-            <th>
-                 @*<a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>*@
-                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter=ViewBag.CurrentFilter })<br />
+
+           
+            <th >
+                 @if (ViewBag.TitleSortParm == "Title_desc")
+                 {
+                        @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter=ViewBag.CurrentFilter}, new{@class = "actionLink"})<br />
+                    }
+                    else
+                    {
+                        @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter=ViewBag.CurrentFilter }, new{@class = "actionLink"})<br />
+                    }
+                    
+
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -49,13 +58,27 @@
             </th>
             
             <th>
-                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">@Html.DisplayNameFor(model => model.AuthorName)</a>*@
-                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.AuthorSortParm, currentFilter=ViewBag.CurrentFilter })<br />
+                   @if (ViewBag.AuthorSortParm == "Author_desc")
+                 {
+                        @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.AuthorSortParm, currentFilter=ViewBag.CurrentFilter}, new{@class = "actionLink"})<br />
+                    }
+                    else
+                    {
+                        @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.AuthorSortParm, currentFilter=ViewBag.CurrentFilter }, new{@class = "actionLink"})<br />
+                    }
+                
                 @Html.DisplayNameFor(model => model.AuthorName)
             </th>
             <th>
-               @* <a asp-action="Index" asp-route-sortOrder="@ViewData["GenreSortParm"]">@Html.DisplayNameFor(model => model.GenreName)</a>*@
-                @Html.ActionLink("Asc/Desc", "Index", new { sortOrder = ViewBag.GenreSortParm, currentFilter=ViewBag.CurrentFilter })<br />
+                @if (ViewBag.GenreSortParm == "Genre_desc")
+                 {
+                        @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.GenreSortParm, currentFilter=ViewBag.CurrentFilter}, new{@class = "actionLink"})<br />
+                    }
+                    else
+                    {
+                        @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.GenreSortParm, currentFilter=ViewBag.CurrentFilter }, new{@class = "actionLink"})<br />
+                    }
+               
                 @Html.DisplayNameFor(model => model.GenreName)
             </th>
             
@@ -73,7 +96,7 @@
     {
         
     
-        <tr class="table-info table-light">
+        <tr class="table-info table-light" >
             <td style="width: 15%"> 
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -125,7 +148,7 @@
 
                 @*<a asp-action="Delete" asp-route-id="@item.BooksID">Delete</a>*@
             </td>
-            
+
         </tr>
     }
     
