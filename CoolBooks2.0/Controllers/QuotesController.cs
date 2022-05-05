@@ -85,7 +85,7 @@ namespace CoolBooks.Controllers
             await _context.Quotes.AddAsync(quote);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Books", new { id = quotes.BooksID });
         }
 
         // GET: Quotes/Edit/5

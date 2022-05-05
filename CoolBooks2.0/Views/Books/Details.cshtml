@@ -142,18 +142,10 @@
                 <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👍</a>
                 <a class="btn btn-danger">👎</a>
             }
+}
 
+    
 
-    <hr />
-        @foreach (var reviews in Model.Reviews)
-        {
-            <h3>@Html.DisplayFor(Model => reviews.UserName)</h3>
-            <p style="font-size:18px;">@Html.DisplayFor(Model => reviews.Text)</p>
-            <h5 style="font-size:18px;">Rating: @Html.DisplayFor(Model => reviews.Rating) /5</h5>
-            <a asp-action="Create" asp-controller="Quotes" asp-route-id=@Html.ValueFor(Model => reviews.ReviewsID) class="btn btn-primary">"Add a quote"</a> 
-
-
-        }
 </div>
 
 <div>
