@@ -44,6 +44,23 @@ namespace CoolBooks.Controllers
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
+        public async Task<IActionResult> Dislike(int id, int id2)
+        {
+
+            var reviewComents = new ReviewComents();
+            reviewComents.ReviewsID = id;
+            reviewComents.React = false;
+            reviewComents.ClientId = _userManager.GetUserId(HttpContext.User);
+
+            await _context.ReviewComents.AddAsync(reviewComents);
+            _context.SaveChanges();
+
+
+
+
+            return RedirectToAction("Details", "Books", new { id = id2 });
+
+        }
         public async Task<IActionResult> UpdateDislike(int id, int id2, int id3)
         {
 

@@ -67,7 +67,7 @@ namespace CoolBooks.Controllers
                        Y = p.Count(),
 
                    })
-                   .ToList();
+                   .ToList().Take(5);
 
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(coolbooksContext);
@@ -97,7 +97,7 @@ namespace CoolBooks.Controllers
                 Label = g.Key.Label,
                 Y = g.Count()
             })
-            .ToList();
+            .ToList().Take(5);
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
@@ -126,7 +126,7 @@ namespace CoolBooks.Controllers
                                                 Label = g.Key.Label,
                                                 Y = g.Count()
                                             })
-                                        .ToList();
+                                        .ToList().Take(5);
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
@@ -155,7 +155,7 @@ namespace CoolBooks.Controllers
                 Label = g.Key.Label,
                 Y = g.Count()
             })
-            .ToList();
+            .ToList().Take(5);
 
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
@@ -181,7 +181,7 @@ namespace CoolBooks.Controllers
                 Label = g.Key.Label,
                 Y = g.Count()
             })
-            .ToList();
+            .ToList().Take(5);
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
         }
@@ -206,7 +206,7 @@ namespace CoolBooks.Controllers
                 Label = g.Key.Label,
                 Y = g.Count()
             })
-            .ToList();
+            .ToList().Take(5);
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
         }
@@ -221,7 +221,7 @@ namespace CoolBooks.Controllers
                         where (r.Created > pastDate)
                         select new
                         {
-                            Label = g.Name + " " + r.Created, //line break sql?
+                            Label = g.Name + " " + r.Created, //line break sql? g.Name + " " +
 
                             Y = r.Created
                         };
@@ -231,7 +231,7 @@ namespace CoolBooks.Controllers
                 Label = g.Key.Label,
                 Y = g.Count()
             })
-            .ToList();
+            .ToList().Take(5);
             ViewBag.DataPoints = JsonConvert.SerializeObject(GraphInput);
             return View();
         }
