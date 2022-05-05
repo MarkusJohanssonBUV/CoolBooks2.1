@@ -66,7 +66,7 @@
    
 <h2>Reviews: </h2>
 
-<div>
+
 
     
     <hr />
@@ -76,7 +76,9 @@
    
     <h2>Reviews: </h2>
 
-    <div class="row">
+<div class="row">
+
+
     <div class="col-md-4">
         <form asp-controller="Reviews" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -107,6 +109,8 @@
     <hr />
         @foreach (var reviews in Model.Reviews)
         {
+            int likes = 0;
+            int disLikes = 0;
             bool hasReacted = true;
             bool liked = true;
             int comentId = 0;
@@ -130,18 +134,29 @@
                         liked = false;
                        
                     }
+
                      comentId = coment.ReviewComentsID;
+
                 }
-                
+                if (coment.React && coment.ReviewsID == reviews.ReviewsID)
+                {
+                    likes++;
+                }
+                else if (!coment.React && coment.ReviewsID == reviews.ReviewsID)
+                {
+                    disLikes++;
+                }
+
             }
             if (hasReacted)
             {
-                <a asp-action="Like" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👍</a>
-                <a asp-action="Dislike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">👎</a>
+                <a asp-action="Like" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">@likes 👍</a>
+                <a asp-action="Dislike" asp-controller="ReviewComents" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-primary">@disLikes 👎</a>
 
             }
             else if(!hasReacted && liked)
             {
+
                 <a class="btn btn-success">👍</a>
                 <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">👎</a>
             }
@@ -168,6 +183,8 @@
              
 
         }
+
+
 
     
 

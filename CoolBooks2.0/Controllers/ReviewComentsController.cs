@@ -46,7 +46,6 @@ namespace CoolBooks.Controllers
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
-
         public async Task<IActionResult> Dislike(int id, int id2)
         {
 
@@ -77,6 +76,7 @@ namespace CoolBooks.Controllers
             await _context.SaveChangesAsync();
 
 
+
             return RedirectToAction("Details", "Books", new { id = id2 });
 
         }
@@ -91,6 +91,7 @@ namespace CoolBooks.Controllers
 
             _context.ReviewComents.Update(reviewComents);
             await _context.SaveChangesAsync();
+
 
 
             return RedirectToAction("Details", "Books", new { id = id2 });
