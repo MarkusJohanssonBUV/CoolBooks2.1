@@ -221,7 +221,7 @@ namespace CoolBooks.Controllers
                         where (r.Created > pastDate)
                         select new
                         {
-                            Label = g.Name + " " + r.Created, //line break sql?
+                            Label = g.Name + " " + r.Created, //line break sql? g.Name + " " +
 
                             Y = r.Created
                         };
