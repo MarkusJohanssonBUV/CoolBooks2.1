@@ -41,9 +41,9 @@ namespace CoolBooks.Data
                 //optionsBuilder.UseSqlServer("Data Source=MARKUS\\MARKUSSQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
 
-                //optionsBuilder.UseSqlServer("Data Source=LAPTOP-K1146D8H\\SQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=LAPTOP-K1146D8H\\SQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-4JRD5JN\\SQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-4JRD5JN\\SQLEXPRESS;Initial Catalog=CoolBooks;Integrated Security=True;Connect Timeout=50;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
 
 
