@@ -140,21 +140,16 @@ namespace CoolBooks.Controllers
         }
 
         // GET: Reviews/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int id2)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var review = _context.Reviews.Where(r => r.ReviewsID == id).FirstOrDefault();
+            review.IsDeleted = true;
 
-            var reviews = await _context.Reviews
-                .FirstOrDefaultAsync(m => m.ReviewsID == id);
-            if (reviews == null)
-            {
-                return NotFound();
-            }
+            _context.Reviews.Update(review);
+            await _context.SaveChangesAsync();
 
-            return View(reviews);
+
+            return RedirectToAction("Details", "Books", new { id = id2 });
         }
 
         // POST: Reviews/Delete/5

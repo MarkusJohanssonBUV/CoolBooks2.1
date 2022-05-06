@@ -74,25 +74,30 @@ namespace CoolBooks.Controllers
         {
             var reviews = from q in _context.Reviews where q.Flag == true select q;
             
+            var reviewView = new ReviewViewModel
+            {
+                Reviews = reviews.ToList()
+            };
+            return View(reviewView);
 
+            //var reviews = from q in _context.Reviews where q.Flag == true select q;
 
-            return View(reviews.ToList());
+            //return View(reviews.ToList());
 
         }
 
         [HttpPost]
-        public IActionResult ManageFlag(IEnumerable<Reviews> flag)
+        public IActionResult ManageFlag(ReviewViewModel flag)
         {
-
-            foreach (var rev in flag)
+            foreach (var review in flag.Reviews)
             {
 
-                _context.Reviews.Update(rev);
+                _context.Reviews.Update(review);
             }
 
             _context.SaveChanges();
 
-            return View();
+            return RedirectToAction("ManageFlag", "Admin");
         }
 
     }
