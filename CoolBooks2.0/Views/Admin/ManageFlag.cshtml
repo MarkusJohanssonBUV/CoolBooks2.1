@@ -5,11 +5,17 @@
     <table class="table table-dark table-striped table-borderless table-hover align-top">
     <thead>
         <tr>
+             <th>
+                @Html.DisplayNameFor(model => model.Books[0].Title)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Reviews[0].Text)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Reviews[0].Flag)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Reviews[0].IsDeleted)
             </th>
            
         </tr>
@@ -20,26 +26,76 @@
                  @for (int i = 0; i < Model.Reviews.Count; i++)
                         {
                         <tr class="table-info table-light">
+
+                            @for (var j = 0; j < Model.Books.Count; j++)
+                            {
+                                if (Model.Reviews[i].BookID == Model.Books[j].BooksID)
+                                {
+                                    <td>
+                
+                                        @Html.DisplayFor(modelItem=>modelItem.Books[i].Title)
+             
+                                    </td>
+                                }
+                                 
+                            }
+
+
                             <td>
                 
                                 @Html.DisplayFor(modelItem=>modelItem.Reviews[i].Text)
              
                             </td>
-                            <td>
+                            @if (Model.Reviews[i].Flag)
+                            {
+                                 <td>
                                 <div class="switch_box box_1" > 
                                   @Html.CheckBoxFor(modelItem=>modelItem.Reviews[i].Flag, new{ @class="switch_1"})   
                                  
-                                  @Html.HiddenFor(modelItem=>modelItem.Reviews[i].ReviewsID)
-                                   @Html.HiddenFor(modelItem=>modelItem.Reviews[i].BookID)
-                                    @Html.HiddenFor(modelItem=>modelItem.Reviews[i].ClientId)
-                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Created)
-                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].IsDeleted)
-                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].UserName)
-                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Rating)
-                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Text)
+                                  
                                 </div>
                 
                             </td>
+                            }
+                            @if (Model.Reviews[i].Flag==false)
+                            {
+                                 <td>
+                                <div class="switch_box box_1" > 
+                                  @Html.CheckBoxFor(modelItem=>modelItem.Reviews[i].Flag, new{ @class="switch_1", @disabled = "disabled"})   
+                                 
+                                  
+                                </div>
+                
+                            </td>
+                            }
+                           
+                           
+                @if (Model.Reviews[i].IsDeleted)
+                {  <td>
+                     @Html.CheckBoxFor(modelItem=>modelItem.Reviews[i].IsDeleted, new{ @class="switch_1"})
+             
+                            </td>
+                }
+
+                @if (Model.Reviews[i].IsDeleted==false)
+                            {
+                                 <td>
+                                <div class="switch_box box_1" > 
+                                  @Html.CheckBoxFor(modelItem=>modelItem.Reviews[i].IsDeleted, new{ @class="switch_1" , @disabled = "disabled" })   @*onclick = "return false", @class = "switch_2"*@
+                                 
+                                  
+                                </div>
+                
+                            </td>
+                            }
+                               @Html.HiddenFor(modelItem=>modelItem.Reviews[i].ReviewsID)
+                                   @Html.HiddenFor(modelItem=>modelItem.Reviews[i].BookID)
+                                    @Html.HiddenFor(modelItem=>modelItem.Reviews[i].ClientId)
+                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Created)
+                                     
+                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].UserName)
+                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Rating)
+                                     @Html.HiddenFor(modelItem=>modelItem.Reviews[i].Text)
             
                         </tr>
                         }

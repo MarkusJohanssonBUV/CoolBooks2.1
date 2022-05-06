@@ -72,11 +72,12 @@ namespace CoolBooks.Controllers
 
         public async Task<IActionResult> ManageFlag()
         {
-            var reviews = from q in _context.Reviews where q.Flag == true select q;
+            var reviews = from q in _context.Reviews where q.Flag == true || q.IsDeleted == true select q;
             
             var reviewView = new ReviewViewModel
             {
-                Reviews = reviews.ToList()
+                Reviews = reviews.ToList(),
+                Books = _context.Books.ToList()
             };
             return View(reviewView);
 
