@@ -49,7 +49,7 @@ namespace CoolBooks.Controllers
                     AutorsId = (List<int>)p.AuthorsFromBooks.Select(m => m.Author.AuthorID),
                     AuthorName = (List<string>)p.AuthorsFromBooks.Select(m => m.Author.FullName),
                     UserName = (List<string>)p.BooksUsers.Select(m => m.Client.UserName),
-                    Reviews = p.Reviews.ToList(),
+                    Reviews = p.Reviews.Where(m=>m.IsDeleted !=true).ToList(),
                     Quotes = p.Quotes.ToList(),
                  
                 })

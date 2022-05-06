@@ -157,16 +157,16 @@
             else if(!hasReacted && liked)
             {
 
-                <a class="btn btn-success">👍</a>
-                <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">👎</a>
+                <a class="btn btn-success">@likes 👍</a>
+                <a asp-action="UpdateDislike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">@disLikes 👎</a>
             }
             else if(!hasReacted && !liked)
             {
-                <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">👍</a>
-                <a class="btn btn-danger">👎</a>
+                <a asp-action="UpdateLike" asp-controller="ReviewComents" asp-route-id=@comentId asp-route-id2=@Model.BooksID asp-route-id3=@reviews.ReviewsID class="btn btn-primary">@likes 👍</a>
+                <a class="btn btn-danger">@disLikes 👎   </a>
             }
                 
-            @if (User.IsInRole("Admin"))
+            @if (SignInManager.IsSignedIn(User))
             {
                  @if (reviews.Flag)
                     {
@@ -177,7 +177,15 @@
                         <a asp-action="NotFlag" asp-controller="Reviews" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID style="text-decoration: none;">🏳‍🌈</a>
                     }
             }
-                   
+                
+                @if (User.IsInRole("Admin") || reviews.ClientId == UserManager.GetUserId(User)) 
+                        {
+                             
+                    
+                                        <a asp-action="Delete" asp-controller="Reviews" asp-route-id=@reviews.ReviewsID asp-route-id2=@Model.BooksID class="btn btn-danger">Delete</a>
+                       
+                            
+                        }
                   
                     
              
