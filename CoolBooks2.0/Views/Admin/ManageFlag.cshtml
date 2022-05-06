@@ -23,17 +23,17 @@
         @using (Html.BeginForm("ManageFlag", "Admin", FormMethod.Post))
         {
               <tbody>
-                 @for (int i = 0; i < Model.Reviews.Count; i++)
+                 @for (int i = 0; i < Model.Reviews.Count(); i++)
                         {
                         <tr class="table-info table-light">
 
-                            @for (var j = 0; j < Model.Books.Count; j++)
+                            @for (var j = 0; j < Model.Books.Count(); j++)
                             {
                                 if (Model.Reviews[i].BookID == Model.Books[j].BooksID)
                                 {
                                     <td>
                 
-                                        @Html.DisplayFor(modelItem=>modelItem.Books[i].Title)
+                                        @Html.DisplayFor(modelItem=>modelItem.Books[j].Title)
              
                                     </td>
                                 }
